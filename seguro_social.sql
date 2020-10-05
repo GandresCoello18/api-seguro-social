@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 05-10-2020 a las 07:44:41
+-- Tiempo de generación: 06-10-2020 a las 00:57:26
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -51,6 +51,21 @@ INSERT INTO `afiliados` (`id_afiliados`, `cedula`, `nombre`, `apellido`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `citas`
+--
+
+CREATE TABLE `citas` (
+  `id_cita` varchar(50) NOT NULL,
+  `id_horario` varchar(50) NOT NULL,
+  `id_user` varchar(50) NOT NULL,
+  `status_cita` varchar(20) NOT NULL,
+  `fecha_cita` varchar(25) NOT NULL,
+  `hora_cita` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `contacto`
 --
 
@@ -68,6 +83,28 @@ CREATE TABLE `contacto` (
 
 INSERT INTO `contacto` (`id_contacto`, `nombres`, `correo`, `mensaje`, `tema`) VALUES
 (3, 'Andres roberto coello goyes', 'goyeselcoca@gmail.com', 'sms', 'dudas con pagos');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `horario`
+--
+
+CREATE TABLE `horario` (
+  `id_horario` varchar(50) NOT NULL,
+  `id_personal` int(11) NOT NULL,
+  `jornada` varchar(25) NOT NULL,
+  `dia` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `horario`
+--
+
+INSERT INTO `horario` (`id_horario`, `id_personal`, `jornada`, `dia`) VALUES
+('3e3a9eeb-2746-4eb3-a754-407576eaced0', 2, 'Mañana', 'Domingo'),
+('58a1fab0-db54-40a1-b206-8ba4cb1eba79', 5, 'Noche', 'Jueves'),
+('7d2e533f-91a0-43a4-ae7f-5e0d42b24811', 4, 'Tarde', 'Lunes');
 
 -- --------------------------------------------------------
 
@@ -159,10 +196,25 @@ ALTER TABLE `afiliados`
   ADD PRIMARY KEY (`id_afiliados`);
 
 --
+-- Indices de la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD PRIMARY KEY (`id_cita`),
+  ADD KEY `id_horario` (`id_horario`),
+  ADD KEY `id_user` (`id_user`);
+
+--
 -- Indices de la tabla `contacto`
 --
 ALTER TABLE `contacto`
   ADD PRIMARY KEY (`id_contacto`);
+
+--
+-- Indices de la tabla `horario`
+--
+ALTER TABLE `horario`
+  ADD PRIMARY KEY (`id_horario`),
+  ADD KEY `id_personal` (`id_personal`);
 
 --
 -- Indices de la tabla `pagos`
@@ -215,6 +267,19 @@ ALTER TABLE `personal`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`id_horario`) REFERENCES `horario` (`id_horario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `horario`
+--
+ALTER TABLE `horario`
+  ADD CONSTRAINT `horario_ibfk_1` FOREIGN KEY (`id_personal`) REFERENCES `personal` (`id_personal`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `pagos`

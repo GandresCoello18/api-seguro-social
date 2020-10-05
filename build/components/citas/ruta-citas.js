@@ -1,0 +1,79 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const store_citas_1 = __importDefault(require("./store-citas"));
+const { comprobar } = require("../util/util-login");
+// import Fechas from "../util/util-fecha";
+const uuid_1 = require("uuid");
+const response_1 = __importDefault(require("../../network/response"));
+class Citas {
+    constructor() {
+        this.router = express_1.Router();
+        this.ruta();
+    }
+    /* USUARIO */
+    asignar_cita(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id_user, id_horario, status, fecha, hora } = req.body || null;
+            try {
+                const cita = {
+                    id_cita: uuid_1.v4(),
+                    id_user,
+                    id_horario,
+                    status_cita: status,
+                    fecha_cita: fecha,
+                    hora_cita: hora
+                };
+                yield store_citas_1.default.insertar_cita(cita);
+                const thisCita = yield store_citas_1.default.consulta_cita(cita.id_cita);
+                response_1.default.success(req, res, thisCita, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, 'Error en crear cita');
+            }
+        });
+    }
+    obtener_cita(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resCita = yield store_citas_1.default.consulta_citas();
+                response_1.default.success(req, res, resCita, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error al consultar citas");
+            }
+        });
+    }
+    eliminar_cita(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params || null;
+            try {
+                yield store_citas_1.default.eliminar_cita(id);
+                response_1.default.success(req, res, { removed: true }, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error al eliminar cita");
+            }
+        });
+    }
+    ruta() {
+        /* entry point user */
+        this.router.get("/", this.obtener_cita);
+        this.router.post("/", comprobar, this.asignar_cita);
+        this.router.delete("/:id", comprobar, this.eliminar_cita);
+    }
+}
+let cita = new Citas();
+exports.default = cita.router;

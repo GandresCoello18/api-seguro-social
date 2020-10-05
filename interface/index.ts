@@ -45,3 +45,19 @@ export interface Pago_INT {
     metodo: string;
     monto: string
 }
+
+export interface Horario_INT {
+    readonly id_horario: string;
+    id_personal: number;
+    jornada: string;
+    dia: string;
+}
+
+export interface Cita_INT {
+    readonly id_cita: string;
+    id_horario: string;
+    id_user: string;
+    status_cita: string;
+    fecha_cita: string;
+    hora_cita: string;
+}
