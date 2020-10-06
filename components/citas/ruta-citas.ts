@@ -19,21 +19,32 @@ class Citas {
   /* USUARIO */
 
   async asignar_cita(req: Request, res: Response) {
-    const { id_user, id_horario, status, fecha, hora } = req.body || null;
+    const { id_user, id_horario, fecha_cita, hora_cita } = req.body || null;
 
     try {
         const cita: Cita_INT = {
             id_cita: uuidv4(),
             id_user,
             id_horario,
-            status_cita: status,
-            fecha_cita: fecha,
-            hora_cita: hora
+            status_cita: 'Reservado',
+            fecha_cita,
+            hora_cita,
         }
-        await Store.insertar_cita(cita);
-        const thisCita = await Store.consulta_cita(cita.id_cita);
 
-        Respuestas.success(req, res, thisCita, 200);
+        const repeatCita = await Store.consulta_cita_repeat(cita.fecha_cita, cita.id_horario, cita.hora_cita);
+        if(repeatCita.length === 0){
+          await Store.insertar_cita(cita);
+          const thisCita = await Store.consulta_cita(cita.id_cita);
+
+          Respuestas.success(req, res, thisCita, 200);
+        }else{
+          Respuestas.success(
+            req,
+            res,
+            { feeback: "La fecha, hora o jornada especificada ya estan tomandas por otra cita." },
+            200
+          );
+        }
 
     } catch (error) {
         Respuestas.error(req, res, error, 500, 'Error en crear cita');
