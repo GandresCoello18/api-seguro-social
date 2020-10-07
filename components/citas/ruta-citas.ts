@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import Store from './store-citas';
-const { comprobar } = require("../util/util-login");
+// const { comprobar } = require("../util/util-login");
 // import Fechas from "../util/util-fecha";
 import { v4 as uuidv4 } from "uuid";
 import Respuestas from "../../network/response";
@@ -74,8 +74,8 @@ class Citas {
   ruta() {
     /* entry point user */
     this.router.get("/", this.obtener_cita);
-    this.router.post("/", comprobar, this.asignar_cita);
-    this.router.delete("/:id", comprobar, this.eliminar_cita);
+    this.router.post("/", this.asignar_cita);
+    this.router.delete("/:id", this.eliminar_cita);
   }
 }
 
