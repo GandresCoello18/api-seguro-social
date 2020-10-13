@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const store_citas_1 = __importDefault(require("./store-citas"));
-const { comprobar } = require("../util/util-login");
+// const { comprobar } = require("../util/util-login");
 // import Fechas from "../util/util-fecha";
 const uuid_1 = require("uuid");
 const response_1 = __importDefault(require("../../network/response"));
@@ -77,8 +77,8 @@ class Citas {
     ruta() {
         /* entry point user */
         this.router.get("/", this.obtener_cita);
-        this.router.post("/", comprobar, this.asignar_cita);
-        this.router.delete("/:id", comprobar, this.eliminar_cita);
+        this.router.post("/", this.asignar_cita);
+        this.router.delete("/:id", this.eliminar_cita);
     }
 }
 let cita = new Citas();

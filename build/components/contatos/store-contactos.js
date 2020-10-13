@@ -27,10 +27,33 @@ class StorePersonal {
         });
     }
     /* SELECT - MOSTRAR - CONSULTAR */
-    consulta_contacto() {
+    consulta_contactos() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
                 db_1.default.query(`SELECT * FROM contacto ORDER BY id_contacto DESC; `, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    consulta_contacto(id_contacto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM contacto WHERE id_contacto = ${id_contacto}; `, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    /* DELETE - ELIMINAR - REMOVER */
+    eliminar_contacto(id_contacto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`DELETE FROM contacto WHERE id_contacto = ${id_contacto}; `, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);

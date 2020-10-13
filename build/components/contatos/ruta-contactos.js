@@ -24,15 +24,16 @@ class Contacto {
     /* USUARIO */
     crear_contacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { nombre, tema, mensaje, correo } = req.body || null;
+            const { nombres, tema, mensaje, correo } = req.body || null;
             const contacto = {
-                nombre,
+                nombre: nombres,
                 tema,
                 mensaje,
                 correo,
             };
             try {
-                const resContacto = yield store_contactos_1.default.insertar_contacto(contacto);
+                yield store_contactos_1.default.insertar_contacto(contacto);
+                const resContacto = yield store_contactos_1.default.consulta_contacto(contacto.id_contacto);
                 response_1.default.success(req, res, resContacto, 200);
             }
             catch (error) {
@@ -43,8 +44,20 @@ class Contacto {
     obtener_contactos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const contacto = yield store_contactos_1.default.consulta_contacto();
+                const contacto = yield store_contactos_1.default.consulta_contactos();
                 response_1.default.success(req, res, contacto, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error en obtener personal");
+            }
+        });
+    }
+    eliminar_contacto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id_contacto } = req.params || null;
+            try {
+                yield store_contactos_1.default.eliminar_contacto(Number(id_contacto));
+                response_1.default.success(req, res, { removed: true }, 200);
             }
             catch (error) {
                 response_1.default.error(req, res, error, 500, "Error en obtener personal");
@@ -55,6 +68,7 @@ class Contacto {
         /* entry point user */
         this.router.get("/", this.obtener_contactos);
         this.router.post("/", this.crear_contacto);
+        this.router.delete("/:id_contacto", this.eliminar_contacto);
     }
 }
 let store = new Contacto();
