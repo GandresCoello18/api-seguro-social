@@ -4,8 +4,12 @@ export interface Usuario_INT {
     email: string;
     password: string;
     status: string;
-    id_afiliado: number;
     admin?: boolean;
+    nombres: string;
+    apellidos: string;
+    sexo: string;
+    fecha_nacimiento: string;
+    fecha_registro: string;
 }
 
 export interface Afiliados_INT {

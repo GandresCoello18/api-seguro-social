@@ -18,7 +18,7 @@ class StoreUsuario {
     insertar_usuario(user) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`INSERT INTO usuarios (id_user, cedula, email, password, status, id_afiliado) VALUES ('${user.id_user}', ${user.cedula}, '${user.email}', '${user.password}', '${user.status}', ${user.id_afiliado})`, (err, data) => {
+                db_1.default.query(`INSERT INTO usuarios (id_user, cedula, email, password, status, nombres, apellidos, sexo, fecha_nacimiento) VALUES ('${user.id_user}', ${user.cedula}, '${user.email}', '${user.password}', '${user.status}', '${user.nombres}', '${user.apellidos}', '${user.sexo}', '${user.fecha_nacimiento}')`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
@@ -27,10 +27,10 @@ class StoreUsuario {
         });
     }
     /* SELECT - MOSTRAR - CONSULTAR */
-    validar_usuario_existente(email) {
+    validar_usuario_existente(email, cedula) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`SELECT * FROM usuarios WHERE email = '${email}' `, (err, data) => {
+                db_1.default.query(`SELECT * FROM usuarios WHERE email = '${email}' OR cedula = ${cedula} `, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
@@ -65,6 +65,17 @@ class StoreUsuario {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
                 db_1.default.query(`UPDATE usuarios SET nombres = '${nombres}', apellidos = '${apellidos}', email_on = ${email_on}, tipo_user = '${tipo_user}' WHERE id_user = '${id}' `, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    update_password(id, new_password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`UPDATE usuarios SET password = '${new_password}' WHERE id_user = '${id}' `, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);

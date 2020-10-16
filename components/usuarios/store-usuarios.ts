@@ -7,7 +7,7 @@ class StoreUsuario {
   async insertar_usuario(user: Usuario_INT) {
     return await new Promise((resolve, reject) => {
       database.query(
-        `INSERT INTO usuarios (id_user, cedula, email, password, status, id_afiliado) VALUES ('${user.id_user}', ${user.cedula}, '${user.email}', '${user.password}', '${user.status}', ${user.id_afiliado})`,
+        `INSERT INTO usuarios (id_user, cedula, email, password, status, nombres, apellidos, sexo, fecha_nacimiento) VALUES ('${user.id_user}', ${user.cedula}, '${user.email}', '${user.password}', '${user.status}', '${user.nombres}', '${user.apellidos}', '${user.sexo}', '${user.fecha_nacimiento}')`,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);
@@ -18,10 +18,10 @@ class StoreUsuario {
 
   /* SELECT - MOSTRAR - CONSULTAR */
 
-  async validar_usuario_existente(email: String): Promise<Usuario_INT[]> {
+  async validar_usuario_existente(email: String, cedula: number): Promise<Usuario_INT[]> {
     return await new Promise((resolve, reject) => {
       database.query(
-        `SELECT * FROM usuarios WHERE email = '${email}' `,
+        `SELECT * FROM usuarios WHERE email = '${email}' OR cedula = ${cedula} `,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);
@@ -63,6 +63,18 @@ class StoreUsuario {
     return await new Promise((resolve, reject) => {
       database.query(
         `UPDATE usuarios SET nombres = '${nombres}', apellidos = '${apellidos}', email_on = ${email_on}, tipo_user = '${tipo_user}' WHERE id_user = '${id}' `,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
+  async update_password(id: string, new_password: string) {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `UPDATE usuarios SET password = '${new_password}' WHERE id_user = '${id}' `,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);
