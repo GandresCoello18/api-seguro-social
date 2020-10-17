@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const store_contactos_1 = __importDefault(require("./store-contactos"));
+const send_email_1 = __importDefault(require("../email/send-email"));
 const { comprobar } = require("../util/util-login");
 const response_1 = __importDefault(require("../../network/response"));
 class Contacto {
@@ -38,6 +39,24 @@ class Contacto {
             }
             catch (error) {
                 response_1.default.error(req, res, error, 500, 'Error en crear contacto');
+            }
+        });
+    }
+    send_email(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email, message } = req.body || null;
+            const send = {
+                from: email,
+                to: 'Respondiendo dudas',
+                subject: 'Respondiendo dudas',
+                text: message,
+            };
+            try {
+                yield send_email_1.default.send(send);
+                response_1.default.success(req, res, { send: true }, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, 'Error al enviar mensaje de correo electronico');
             }
         });
     }
@@ -67,6 +86,7 @@ class Contacto {
     ruta() {
         /* entry point user */
         this.router.get("/", this.obtener_contactos);
+        this.router.post("/send", this.send_email);
         this.router.post("/", this.crear_contacto);
         this.router.delete("/:id_contacto", this.eliminar_contacto);
     }

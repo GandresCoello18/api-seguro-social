@@ -11,6 +11,8 @@ interface Tipos {
   dbName: string | undefined;
   dbPort: string | undefined;
   jwtSecret: String | undefined;
+  correoGmail: string | undefined;
+  claveGmail: string | undefined;
 }
 
 const config: Tipos = {
@@ -23,6 +25,8 @@ const config: Tipos = {
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
   jwtSecret: process.env.AUTH_JWT_SECRET,
+  correoGmail: process.env.GMAIL_CORREO,
+  claveGmail: process.env.GMAIL_PASSWORD,
 };
 
 module.exports = { config };

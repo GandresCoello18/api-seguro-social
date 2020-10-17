@@ -1,8 +1,9 @@
 import { Request, Response, Router } from "express";
 import Store from "./store-contactos";
+import Email from '../email/send-email';
 const { comprobar } = require("../util/util-login");
 import Respuestas from "../../network/response";
-import { Contacto_INT } from "../../interface";
+import { Contacto_INT, Email_INT } from "../../interface";
 
 class Contacto {
   router: Router;
@@ -33,6 +34,24 @@ class Contacto {
     }
   }
 
+  async send_email(req: Request, res: Response) {
+    const { email, message } = req.body || null;
+
+    const send: Email_INT = {
+      from: email,
+      to: 'Respondiendo dudas',
+      subject: 'Respondiendo dudas',
+      text: message,
+    }
+
+    try {
+      await Email.send(send);
+      Respuestas.success(req, res, {send: true}, 200);
+    } catch (error) {
+        Respuestas.error(req, res, error, 500, 'Error al enviar mensaje de correo electronico');
+    }
+  }
+
   async obtener_contactos(req: Request, res: Response) {
     try {
         const contacto = await Store.consulta_contactos();
@@ -55,6 +74,7 @@ class Contacto {
   ruta() {
     /* entry point user */
     this.router.get("/", this.obtener_contactos);
+    this.router.post("/send", this.send_email);
     this.router.post("/", this.crear_contacto);
     this.router.delete("/:id_contacto", this.eliminar_contacto);
   }

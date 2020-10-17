@@ -65,3 +65,10 @@ export interface Cita_INT {
     fecha_cita: string;
     hora_cita: string;
 }
+
+export interface Email_INT {
+    from: string,
+    to: string,
+    subject: string,
+    text: string,
+}
