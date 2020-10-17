@@ -39,16 +39,19 @@ class Contacto {
 
     const send: Email_INT = {
       from: email,
-      to: 'Respondiendo dudas',
+      to: email,
       subject: 'Respondiendo dudas',
       text: message,
     }
 
     try {
-      await Email.send(send);
-      Respuestas.success(req, res, {send: true}, 200);
+      Email.send(send).then( () => {
+        Respuestas.success(req, res, {send: true}, 200);
+      }).catch(error => {
+        Respuestas.error(req, res, error.message, 500, 'Error al enviar mensaje de correo electronico');
+      })
     } catch (error) {
-        Respuestas.error(req, res, error, 500, 'Error al enviar mensaje de correo electronico');
+        Respuestas.error(req, res, error.message, 500, 'Error al enviar mensaje de correo electronico');
     }
   }
 
@@ -57,7 +60,7 @@ class Contacto {
         const contacto = await Store.consulta_contactos();
         Respuestas.success(req, res, contacto, 200);
     } catch (error) {
-        Respuestas.error(req, res, error, 500, "Error en obtener personal");
+        Respuestas.error(req, res, error.message, 500, "Error en obtener personal");
     }
   }
 

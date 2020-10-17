@@ -18,7 +18,7 @@ class UtilEmail {
     constructor() { }
     send(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("entro en send");
+            console.log("ENVIANDO MENSAJE.........");
             let testAccount = yield nodemailer_1.default.createTestAccount();
             let transporter = nodemailer_1.default.createTransport({
                 host: "smtp.gmail.com",
@@ -37,7 +37,8 @@ class UtilEmail {
                 to: `${data.to}`,
                 subject: `${data.subject}`,
                 text: `${data.text}`,
-                html: `<h1>SEGURO SOCIAL CAMPECINO "LA TEREZA"</h1>`,
+                html: `<h1>SEGURO SOCIAL CAMPECINO "LA TEREZA"</h1>
+            <p>${data.text}</p>`,
             });
             console.log("Message sent: %s", info.messageId);
             console.log("Preview URL: %s", nodemailer_1.default.getTestMessageUrl(info));

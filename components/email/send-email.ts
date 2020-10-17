@@ -6,7 +6,7 @@ class UtilEmail {
   constructor() {}
 
   async send(data: Email_INT) {
-    console.log("entro en send");
+    console.log("ENVIANDO MENSAJE.........");
 
     let testAccount = await nodemailer.createTestAccount();
 
@@ -28,7 +28,8 @@ class UtilEmail {
       to: `${data.to}`, // list of receivers
       subject: `${data.subject}`, // Subject line
       text: `${data.text}`, // plain text body
-      html: `<h1>SEGURO SOCIAL CAMPECINO "LA TEREZA"</h1>`, // html body
+      html: `<h1>SEGURO SOCIAL CAMPECINO "LA TEREZA"</h1>
+            <p>${data.text}</p>`, // html body
     });
 
     console.log("Message sent: %s", info.messageId);

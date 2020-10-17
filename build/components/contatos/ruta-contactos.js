@@ -47,16 +47,19 @@ class Contacto {
             const { email, message } = req.body || null;
             const send = {
                 from: email,
-                to: 'Respondiendo dudas',
+                to: email,
                 subject: 'Respondiendo dudas',
                 text: message,
             };
             try {
-                yield send_email_1.default.send(send);
-                response_1.default.success(req, res, { send: true }, 200);
+                send_email_1.default.send(send).then(() => {
+                    response_1.default.success(req, res, { send: true }, 200);
+                }).catch(error => {
+                    response_1.default.error(req, res, error.message, 500, 'Error al enviar mensaje de correo electronico');
+                });
             }
             catch (error) {
-                response_1.default.error(req, res, error, 500, 'Error al enviar mensaje de correo electronico');
+                response_1.default.error(req, res, error.message, 500, 'Error al enviar mensaje de correo electronico');
             }
         });
     }
@@ -67,7 +70,7 @@ class Contacto {
                 response_1.default.success(req, res, contacto, 200);
             }
             catch (error) {
-                response_1.default.error(req, res, error, 500, "Error en obtener personal");
+                response_1.default.error(req, res, error.message, 500, "Error en obtener personal");
             }
         });
     }

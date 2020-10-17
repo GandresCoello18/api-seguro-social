@@ -19,6 +19,17 @@ export interface Afiliados_INT {
     apellido: string;
 }
 
+export interface Grupo_afiliados_INT {
+    readonly id_grupo?: number;
+    id_user: string;
+    tipo_familiar: string;
+    nombres: string;
+    sexo: string;
+    apellidos: string;
+    fecha_nacimiento: string;
+    status_grupo: string;
+}
+
 export interface Personal_INT {
     readonly id_personal?: number;
     nombres: string;

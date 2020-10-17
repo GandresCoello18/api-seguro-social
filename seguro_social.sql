@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-10-2020 a las 00:57:26
+-- Tiempo de generación: 17-10-2020 a las 22:29:46
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -24,33 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `afiliados`
---
-
-CREATE TABLE `afiliados` (
-  `id_afiliados` int(11) NOT NULL,
-  `cedula` int(11) NOT NULL,
-  `nombre` varchar(25) NOT NULL,
-  `apellido` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `afiliados`
---
-
-INSERT INTO `afiliados` (`id_afiliados`, `cedula`, `nombre`, `apellido`) VALUES
-(14, 1207422188, 'diego', 'villamar'),
-(15, 1204567724, 'jose', 'lopez'),
-(16, 943118532, 'mirian', 'merino'),
-(17, 1022488584, 'victor', 'garcia'),
-(18, 1104854884, 'jairo', 'tohapanta'),
-(19, 989888540, 'miguel', 'alvario'),
-(20, 994221140, 'karla', 'alaba'),
-(22, 1207345768, 'Andres', 'Coello');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `citas`
 --
 
@@ -62,6 +35,15 @@ CREATE TABLE `citas` (
   `fecha_cita` varchar(25) NOT NULL,
   `hora_cita` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `citas`
+--
+
+INSERT INTO `citas` (`id_cita`, `id_horario`, `id_user`, `status_cita`, `fecha_cita`, `hora_cita`) VALUES
+('550665fe-c178-4e0f-bab8-3a48b4e171c3', '58a1fab0-db54-40a1-b206-8ba4cb1eba79', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-01', '21:00'),
+('94c18bd3-7cac-4c75-a6a1-ec37b4e8ef80', '3e3a9eeb-2746-4eb3-a754-407576eaced0', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-11', '09:30'),
+('bd813e43-80cc-4e10-8e2b-d05ef1c88c30', '58a1fab0-db54-40a1-b206-8ba4cb1eba79', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-01', '20:00');
 
 -- --------------------------------------------------------
 
@@ -83,6 +65,30 @@ CREATE TABLE `contacto` (
 
 INSERT INTO `contacto` (`id_contacto`, `nombres`, `correo`, `mensaje`, `tema`) VALUES
 (3, 'Andres roberto coello goyes', 'goyeselcoca@gmail.com', 'sms', 'dudas con pagos');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `grupo_seguro`
+--
+
+CREATE TABLE `grupo_seguro` (
+  `id_grupo` int(11) NOT NULL,
+  `id_user` varchar(50) NOT NULL,
+  `tipo_familiar` varchar(40) NOT NULL,
+  `nombres` varchar(40) NOT NULL,
+  `apellidos` varchar(40) NOT NULL,
+  `fecha_nacimiento` varchar(25) NOT NULL,
+  `status_grupo` varchar(25) NOT NULL,
+  `sexo` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `grupo_seguro`
+--
+
+INSERT INTO `grupo_seguro` (`id_grupo`, `id_user`, `tipo_familiar`, `nombres`, `apellidos`, `fecha_nacimiento`, `status_grupo`, `sexo`) VALUES
+(1, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Hijos', 'patricia', 'coello', '2010-06-11', 'registrado', 'Femenino');
 
 -- --------------------------------------------------------
 
@@ -126,11 +132,7 @@ CREATE TABLE `pagos` (
 --
 
 INSERT INTO `pagos` (`id_pago`, `id_user`, `fecha_pago`, `status`, `metodo`, `monto`) VALUES
-(5, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', '2020-10-03', 'pagado', 'Tarjeta de credito', 43),
-(7, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', '2020-11-03T00:00:00.000Z', 'pagado', 'Tarjeta de credito', 35),
-(14, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', '2020-12-03T00:00:00.000Z', 'pagado', 'Efectivo', 40),
-(16, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', '2021-01-03T00:00:00.000Z', 'pagado', 'Efectivo', 70),
-(18, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', '2021-02-03T00:00:00.000Z', 'pagado', 'Tarjeta de credito', 31);
+(19, 'f13d0523-0ac8-4273-af50-2af0ba33142e', '2020-08-03T19:00:00-05:00', 'pagado', 'Efectivo', 5);
 
 -- --------------------------------------------------------
 
@@ -174,26 +176,25 @@ CREATE TABLE `usuarios` (
   `email` varchar(25) NOT NULL,
   `password` varchar(100) NOT NULL,
   `status` varchar(15) NOT NULL,
-  `id_afiliado` int(11) NOT NULL
+  `nombres` varchar(50) NOT NULL,
+  `apellidos` varchar(50) NOT NULL,
+  `sexo` varchar(20) NOT NULL,
+  `fecha_nacimiento` varchar(25) NOT NULL,
+  `fecha_registro` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_user`, `cedula`, `email`, `password`, `status`, `id_afiliado`) VALUES
-('c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 1207345768, 'goyeselcoca@gmail.com', '$2a$10$nYeuSK2VZTA5O8wPiZyW4ONjDZX8EANUwCZo/Fry2uilavpiwRIea', 'registrado', 22),
-('fbff2fd7-04f7-4ea8-9177-03423c556334', 1207422188, 'administrador@gmail.com', '$2a$10$tZHIgv0rJCFRShqtTZkZQOD2CWEaLHhUJVrjG6mntD4/WmCna9OPW', 'registrado', 14);
+INSERT INTO `usuarios` (`id_user`, `cedula`, `email`, `password`, `status`, `nombres`, `apellidos`, `sexo`, `fecha_nacimiento`, `fecha_registro`) VALUES
+('c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 1207345768, 'goyeselcoca@gmail.com', '$2a$10$nYeuSK2VZTA5O8wPiZyW4ONjDZX8EANUwCZo/Fry2uilavpiwRIea', 'registrado', 'Andres', 'Coello', 'Masculino', '2000-08-01', '2020-06-25'),
+('f13d0523-0ac8-4273-af50-2af0ba33142e', 1207345741, 'perez_23@gmail.com', '$2a$10$JBaCS/QtRs/XDStW.3yX..0VuMypuRM4RNkUOqujU1lbfoHcN4WHO', 'registrado', 'juan', 'perez', 'Masculino', '2020-09-28', '2020-07-04'),
+('fbff2fd7-04f7-4ea8-9177-03423c556334', 1207422188, 'administrador@gmail.com', '$2a$10$tZHIgv0rJCFRShqtTZkZQOD2CWEaLHhUJVrjG6mntD4/WmCna9OPW', 'registrado', 'admin', 'admin', 'none', '0000-00-00', '0000-00-00');
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `afiliados`
---
-ALTER TABLE `afiliados`
-  ADD PRIMARY KEY (`id_afiliados`);
 
 --
 -- Indices de la tabla `citas`
@@ -208,6 +209,13 @@ ALTER TABLE `citas`
 --
 ALTER TABLE `contacto`
   ADD PRIMARY KEY (`id_contacto`);
+
+--
+-- Indices de la tabla `grupo_seguro`
+--
+ALTER TABLE `grupo_seguro`
+  ADD PRIMARY KEY (`id_grupo`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indices de la tabla `horario`
@@ -233,18 +241,11 @@ ALTER TABLE `personal`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id_user`),
-  ADD KEY `id_afiliado` (`id_afiliado`);
+  ADD PRIMARY KEY (`id_user`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `afiliados`
---
-ALTER TABLE `afiliados`
-  MODIFY `id_afiliados` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `contacto`
@@ -253,16 +254,22 @@ ALTER TABLE `contacto`
   MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `grupo_seguro`
+--
+ALTER TABLE `grupo_seguro`
+  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`
 --
 ALTER TABLE `personal`
-  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas
@@ -276,6 +283,12 @@ ALTER TABLE `citas`
   ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `grupo_seguro`
+--
+ALTER TABLE `grupo_seguro`
+  ADD CONSTRAINT `grupo_seguro_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `horario`
 --
 ALTER TABLE `horario`
@@ -286,12 +299,6 @@ ALTER TABLE `horario`
 --
 ALTER TABLE `pagos`
   ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id_user`);
-
---
--- Filtros para la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_afiliado`) REFERENCES `afiliados` (`id_afiliados`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -18,6 +18,7 @@ const ruta_contactos_1 = __importDefault(require("./components/contatos/ruta-con
 const ruta_pagos_1 = __importDefault(require("./components/pagos/ruta-pagos"));
 const ruta_horario_1 = __importDefault(require("./components/horarios/ruta-horario"));
 const ruta_citas_1 = __importDefault(require("./components/citas/ruta-citas"));
+const ruta_grupos_1 = __importDefault(require("./components/grupos/ruta-grupos"));
 const { config } = require("./config/index");
 const logger_1 = require("./components/util/logger");
 class Server {
@@ -51,6 +52,7 @@ class Server {
         this.app.use("/api/pagos", ruta_pagos_1.default);
         this.app.use("/api/horario", ruta_horario_1.default);
         this.app.use("/api/cita", ruta_citas_1.default);
+        this.app.use("/api/grupo", ruta_grupos_1.default);
         // se ejecuta si no encuentra la ruta
         this.app.get("*", function (req, res) {
             res.send('RUTA NO EXISTENTE');

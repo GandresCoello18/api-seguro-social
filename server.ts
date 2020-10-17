@@ -14,6 +14,7 @@ import Contacto from './components/contatos/ruta-contactos';
 import Pagos from './components/pagos/ruta-pagos';
 import Horario from './components/horarios/ruta-horario';
 import Citas from './components/citas/ruta-citas';
+import Grupos from './components/grupos/ruta-grupos';
 
 const { config } = require("./config/index");
 import { logger } from "./components/util/logger";
@@ -55,6 +56,7 @@ class Server {
     this.app.use("/api/pagos", Pagos);
     this.app.use("/api/horario", Horario);
     this.app.use("/api/cita", Citas);
+    this.app.use("/api/grupo", Grupos);
     // se ejecuta si no encuentra la ruta
     this.app.get("*", function (req, res) {
       res.send('RUTA NO EXISTENTE');
