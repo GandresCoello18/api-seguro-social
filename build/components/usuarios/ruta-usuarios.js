@@ -16,7 +16,7 @@ const express_1 = require("express");
 const store_usuarios_1 = __importDefault(require("./store-usuarios"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const { comprobar } = require("../util/util-login");
-// import Fechas from "../util/util-fecha";
+const util_fecha_1 = __importDefault(require("../util/util-fecha"));
 const uuid_1 = require("uuid");
 const bcryptjs_2 = __importDefault(require("bcryptjs"));
 const response_1 = __importDefault(require("../../network/response"));
@@ -45,6 +45,7 @@ class Usuario {
                             apellidos,
                             sexo,
                             fecha_nacimiento,
+                            fecha_registro: util_fecha_1.default.fecha_actual(),
                         };
                         yield store_usuarios_1.default.insertar_usuario(user);
                         const usuario = yield store_usuarios_1.default.consulta_usuario(user.id_user);

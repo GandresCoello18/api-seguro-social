@@ -38,6 +38,29 @@ class StorePersonal {
             });
         });
     }
+    consulta_personal_name_lasname(nombre, apellido) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM personal WHERE nombres = '${nombre}' AND apellido = '${apellido}' ; `, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    /* ELIMINAR - DELETE - REMOVER */
+    eliminar_personal(id_personal) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`DELETE FROM personal WHERE id_personal = ${id_personal};`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
 }
 let store = new StorePersonal();
 exports.default = store;
