@@ -18,7 +18,7 @@ class StoreUsuario {
     insertar_usuario(user) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`INSERT INTO usuarios (id_user, cedula, email, password, status, nombres, apellidos, sexo, fecha_nacimiento) VALUES ('${user.id_user}', ${user.cedula}, '${user.email}', '${user.password}', '${user.status}', '${user.nombres}', '${user.apellidos}', '${user.sexo}', '${user.fecha_nacimiento}')`, (err, data) => {
+                db_1.default.query(`INSERT INTO usuarios (id_user, cedula, email, password, status, nombres, apellidos, sexo, fecha_nacimiento, fecha_registro) VALUES ('${user.id_user}', ${user.cedula}, '${user.email}', '${user.password}', '${user.status}', '${user.nombres}', '${user.apellidos}', '${user.sexo}', '${user.fecha_nacimiento}', '${user.fecha_registro}')`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
