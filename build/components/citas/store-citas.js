@@ -60,6 +60,18 @@ class StoreCita {
             });
         });
     }
+    /* UPDATE - REMOVE */
+    status_cita(id_cita, estado) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`UPDATE citas SET status_cita = '${estado}' WHERE id_cita = '${id_cita}';`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
     /* DELETE - ELIMINAR - BORRAR */
     eliminar_cita(id_cita) {
         return __awaiter(this, void 0, void 0, function* () {

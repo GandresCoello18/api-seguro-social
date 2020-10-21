@@ -71,10 +71,24 @@ class Citas {
     }
   }
 
+  async cita_estado(req: Request, res: Response) {
+    const { id } = req.params || null;
+    const { estado } = req.body || null;
+
+    try {
+        await Store.status_cita(id, estado);
+        const thisCita = await Store.consulta_cita(id);
+        Respuestas.success(req, res, {update: true, cita: thisCita}, 200);
+    } catch (error) {
+        Respuestas.error(req, res, error, 500, "Error al editar status cita");
+    }
+  }
+
   ruta() {
     /* entry point user */
     this.router.get("/", this.obtener_cita);
     this.router.post("/", this.asignar_cita);
+    this.router.put("/estado/:id", this.cita_estado);
     this.router.delete("/:id", this.eliminar_cita);
   }
 }

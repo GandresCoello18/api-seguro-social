@@ -54,6 +54,20 @@ class StoreCita {
     });
   }
 
+  /* UPDATE - REMOVE */
+
+  async status_cita(id_cita: string, estado: string): Promise<any> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `UPDATE citas SET status_cita = '${estado}' WHERE id_cita = '${id_cita}';`,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
   /* DELETE - ELIMINAR - BORRAR */
 
   async eliminar_cita(id_cita: string): Promise<any> {

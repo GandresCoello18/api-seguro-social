@@ -74,10 +74,25 @@ class Citas {
             }
         });
     }
+    cita_estado(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params || null;
+            const { estado } = req.body || null;
+            try {
+                yield store_citas_1.default.status_cita(id, estado);
+                const thisCita = yield store_citas_1.default.consulta_cita(id);
+                response_1.default.success(req, res, { update: true, cita: thisCita }, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error al editar status cita");
+            }
+        });
+    }
     ruta() {
         /* entry point user */
         this.router.get("/", this.obtener_cita);
         this.router.post("/", this.asignar_cita);
+        this.router.put("/estado/:id", this.cita_estado);
         this.router.delete("/:id", this.eliminar_cita);
     }
 }
