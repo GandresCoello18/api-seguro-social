@@ -22,7 +22,7 @@ class Horario {
     const { id_personal, jornada, dia } = req.body || null;
 
     try {
-        const countHorario = await Store.count_jornada_dia(jornada, dia);
+        const countHorario = await Store.count_jornada_dia(jornada, dia, id_personal);
 
         if(countHorario.length < 3){
 
