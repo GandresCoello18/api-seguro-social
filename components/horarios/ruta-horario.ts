@@ -25,7 +25,6 @@ class Horario {
         const countHorario = await Store.count_jornada_dia(jornada, dia);
 
         if(countHorario.length < 3){
-            console.log(req.body);
 
             const horario: Horario_INT = {
                 id_horario: uuidv4(),
@@ -74,8 +73,8 @@ class Horario {
   ruta() {
     /* entry point user */
     this.router.get("/", this.obtener_horario);
-    this.router.post("/", comprobar, this.asignar_horario);
-    this.router.delete("/:id", comprobar, this.eliminar_horario);
+    this.router.post("/", this.asignar_horario);
+    this.router.delete("/:id", this.eliminar_horario);
   }
 }
 
