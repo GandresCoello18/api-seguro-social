@@ -49,10 +49,21 @@ class StoreHorario {
             });
         });
     }
-    count_jornada_dia(jornada, dia) {
+    count_jornada_dia(jornada, dia, id_personal) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`SELECT * FROM horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE horario.jornada = '${jornada}' and horario.dia = '${dia}' ORDER BY horario.id_horario DESC; `, (err, data) => {
+                db_1.default.query(`SELECT * FROM horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE horario.jornada = '${jornada}' and horario.dia = '${dia}' and horario.id_personal = ${id_personal} ORDER BY horario.id_horario DESC; `, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    buscar_personal_jornada_dia(jornada, dia, id_personal) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE horario.jornada = '${jornada}' and horario.dia = '${dia}' and horario.id_personal = ${id_personal} ORDER BY horario.id_horario DESC; `, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);

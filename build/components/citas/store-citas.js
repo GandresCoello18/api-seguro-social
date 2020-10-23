@@ -60,6 +60,17 @@ class StoreCita {
             });
         });
     }
+    validar_cita(id_horario, fecha_cita) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM citas WHERE fecha_cita = '${fecha_cita}' and id_horario = '${id_horario}';`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
     /* UPDATE - REMOVE */
     status_cita(id_cita, estado) {
         return __awaiter(this, void 0, void 0, function* () {

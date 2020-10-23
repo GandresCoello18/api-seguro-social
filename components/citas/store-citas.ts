@@ -54,6 +54,18 @@ class StoreCita {
     });
   }
 
+  async validar_cita(id_horario: string, fecha_cita: string): Promise<Cita_INT[]> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `SELECT * FROM citas WHERE fecha_cita = '${fecha_cita}' and id_horario = '${id_horario}';`,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
   /* UPDATE - REMOVE */
 
   async status_cita(id_cita: string, estado: string): Promise<any> {

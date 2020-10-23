@@ -28,21 +28,26 @@ class Horario {
         return __awaiter(this, void 0, void 0, function* () {
             const { id_personal, jornada, dia } = req.body || null;
             try {
-                const countHorario = yield store_horario_1.default.count_jornada_dia(jornada, dia);
-                if (countHorario.length < 3) {
-                    console.log(req.body);
-                    const horario = {
-                        id_horario: uuid_1.v4(),
-                        id_personal,
-                        jornada,
-                        dia
-                    };
-                    yield store_horario_1.default.insertar_horario(horario);
-                    const resHorario = yield store_horario_1.default.consulta_horario(horario.id_horario);
-                    response_1.default.success(req, res, resHorario, 200);
+                const HorarioRepeat = yield store_horario_1.default.buscar_personal_jornada_dia(jornada, dia, id_personal);
+                if (HorarioRepeat.length === 0) {
+                    const countHorario = yield store_horario_1.default.count_jornada_dia(jornada, dia, id_personal);
+                    if (countHorario.length < 3) {
+                        const horario = {
+                            id_horario: uuid_1.v4(),
+                            id_personal,
+                            jornada,
+                            dia
+                        };
+                        yield store_horario_1.default.insertar_horario(horario);
+                        const resHorario = yield store_horario_1.default.consulta_horario(horario.id_horario);
+                        response_1.default.success(req, res, resHorario, 200);
+                    }
+                    else {
+                        response_1.default.success(req, res, { feeback: `La jornada: ${jornada} y el dia: ${dia} ya estan completas` }, 200);
+                    }
                 }
                 else {
-                    response_1.default.success(req, res, { feeback: `La jornada: ${jornada} y el dia: ${dia} ya estan completas` }, 200);
+                    response_1.default.success(req, res, { feeback: `Este Medico ya pertenerce ha la jornada: ${jornada} y el dia: ${dia}.` }, 200);
                 }
             }
             catch (error) {
@@ -76,8 +81,8 @@ class Horario {
     ruta() {
         /* entry point user */
         this.router.get("/", this.obtener_horario);
-        this.router.post("/", comprobar, this.asignar_horario);
-        this.router.delete("/:id", comprobar, this.eliminar_horario);
+        this.router.post("/", this.asignar_horario);
+        this.router.delete("/:id", this.eliminar_horario);
     }
 }
 let horario = new Horario();
