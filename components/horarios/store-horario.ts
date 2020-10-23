@@ -54,6 +54,18 @@ class StoreHorario {
     });
   }
 
+  async buscar_personal_jornada_dia(jornada: string, dia: string, id_personal: number): Promise<Horario_INT[]> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `SELECT * FROM horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE horario.jornada = '${jornada}' and horario.dia = '${dia}' and horario.id_personal = ${id_personal} ORDER BY horario.id_horario DESC; `,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
   ///// DELETE
 
   async eliminar_horario(id_horario: string): Promise<any> {

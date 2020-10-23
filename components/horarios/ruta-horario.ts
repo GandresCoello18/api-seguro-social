@@ -22,27 +22,38 @@ class Horario {
     const { id_personal, jornada, dia } = req.body || null;
 
     try {
-        const countHorario = await Store.count_jornada_dia(jornada, dia, id_personal);
+        const HorarioRepeat = await Store.buscar_personal_jornada_dia(jornada, dia, id_personal);
 
-        if(countHorario.length < 3){
+        if(HorarioRepeat.length === 0){
+          const countHorario = await Store.count_jornada_dia(jornada, dia, id_personal);
 
-            const horario: Horario_INT = {
-                id_horario: uuidv4(),
-                id_personal,
-                jornada,
-                dia
-            }
+          if(countHorario.length < 3){
 
-            await Store.insertar_horario(horario);
-            const resHorario = await Store.consulta_horario(horario.id_horario);
-            Respuestas.success(req, res, resHorario, 200);
+              const horario: Horario_INT = {
+                  id_horario: uuidv4(),
+                  id_personal,
+                  jornada,
+                  dia
+              }
+
+              await Store.insertar_horario(horario);
+              const resHorario = await Store.consulta_horario(horario.id_horario);
+              Respuestas.success(req, res, resHorario, 200);
+          }else{
+              Respuestas.success(
+                  req,
+                  res,
+                  { feeback: `La jornada: ${jornada} y el dia: ${dia} ya estan completas` },
+                  200
+              );
+          }
         }else{
-            Respuestas.success(
-                req,
-                res,
-                { feeback: `La jornada: ${jornada} y el dia: ${dia} ya estan completas` },
-                200
-            );
+          Respuestas.success(
+            req,
+            res,
+            { feeback: `Este Medico ya pertenerce ha la jornada: ${jornada} y el dia: ${dia}.` },
+            200
+        );
         }
 
     } catch (error) {
