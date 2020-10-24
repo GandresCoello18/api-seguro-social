@@ -58,7 +58,7 @@ export interface Pago_INT {
     fecha_pago: string;
     status: string;
     metodo: string;
-    monto: string
+    monto: number
 }
 
 export interface Horario_INT {

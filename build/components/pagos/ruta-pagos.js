@@ -14,8 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const store_pagos_1 = __importDefault(require("./store-pagos"));
+const util_fecha_1 = __importDefault(require("../util/util-fecha"));
 const { comprobar } = require("../util/util-login");
 const response_1 = __importDefault(require("../../network/response"));
+const moment_1 = __importDefault(require("moment"));
 class Pagos {
     constructor() {
         this.router = express_1.Router();
@@ -31,8 +33,13 @@ class Pagos {
                 metodo,
                 monto,
             };
+            const countPago = Math.trunc(Number(pago.monto) / 5);
             try {
-                yield store_pagos_1.default.insertar_pagos(pago);
+                for (let i = 0; i < countPago; i++) {
+                    pago.monto = 5;
+                    yield store_pagos_1.default.insertar_pagos(pago);
+                    pago.fecha_pago = moment_1.default(new Date(util_fecha_1.default.incrementarMes(pago.fecha_pago))).format();
+                }
                 const resPago = yield store_pagos_1.default.consulta_pago(pago.id_user, pago.fecha_pago);
                 response_1.default.success(req, res, resPago, 200);
             }
@@ -79,8 +86,8 @@ class Pagos {
         /* entry point user */
         this.router.get("/mis-pagos", comprobar, this.obtener_mis_pagos);
         this.router.get("/", this.obtener_pagos);
-        this.router.post("/", comprobar, this.crear_pago);
-        this.router.delete("/:id_pago", comprobar, comprobar, this.eliminar_pago);
+        this.router.post("/", this.crear_pago);
+        this.router.delete("/:id_pago", this.eliminar_pago);
     }
 }
 let store = new Pagos();

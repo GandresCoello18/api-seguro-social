@@ -99,7 +99,7 @@ class Citas {
                     horas_disponibles = horas_manana;
                     for (let i = 0; i < horas_manana.length; i++) {
                         for (let j = 0; j < resCita.length; j++) {
-                            if (resCita[0].hora_cita === horas_manana[0]) {
+                            if (resCita[j].hora_cita === horas_manana[i]) {
                                 horas_disponibles.splice(i, 1);
                             }
                         }

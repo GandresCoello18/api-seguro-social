@@ -34,7 +34,11 @@ class Fechas {
   
       return `${fecha} ${hora}`;
     }
+
+    incrementarMes(ultimo_pago: any) {
+      return new Date(ultimo_pago).setMonth(new Date(ultimo_pago).getMonth() + 1);
+    }
   }
-  
+
   let fechas = new Fechas();
   export default fechas;

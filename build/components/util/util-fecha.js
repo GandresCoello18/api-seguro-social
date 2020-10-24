@@ -29,6 +29,9 @@ class Fechas {
         let hora = hoy.getHours() + ":" + hoy.getMinutes() + ":" + hoy.getSeconds();
         return `${fecha} ${hora}`;
     }
+    incrementarMes(ultimo_pago) {
+        return new Date(ultimo_pago).setMonth(new Date(ultimo_pago).getMonth() + 1);
+    }
 }
 let fechas = new Fechas();
 exports.default = fechas;

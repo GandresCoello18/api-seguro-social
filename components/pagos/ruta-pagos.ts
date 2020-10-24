@@ -1,8 +1,10 @@
 import { Request, Response, Router } from "express";
 import Store from "./store-pagos";
+import Fecha from '../util/util-fecha';
 const { comprobar } = require("../util/util-login");
 import Respuestas from "../../network/response";
 import { Pago_INT } from "../../interface";
+import moment from "moment";
 
 class Pagos {
   router: Router;
@@ -23,9 +25,18 @@ class Pagos {
         monto,
     }
 
+    const countPago = Math.trunc(Number(pago.monto) / 5);
+
     try {
-        await Store.insertar_pagos(pago);
-        const resPago = await Store.consulta_pago(pago.id_user, pago.fecha_pago);
+      const resPago = [];
+        for(let i = 0; i < countPago; i++){
+          pago.monto = 5;
+          await Store.insertar_pagos(pago);
+          pago.fecha_pago = moment(new Date(Fecha.incrementarMes(pago.fecha_pago))).format();
+          let data = await Store.consulta_pago(pago.id_user, pago.fecha_pago);
+          resPago.push(data[0]);
+        }
+
         Respuestas.success(req, res, resPago, 200);
     } catch (error) {
         Respuestas.error(req, res, error, 500, 'Error en crear pago');
@@ -66,8 +77,8 @@ class Pagos {
     /* entry point user */
     this.router.get("/mis-pagos", comprobar, this.obtener_mis_pagos);
     this.router.get("/", this.obtener_pagos);
-    this.router.post("/", comprobar, this.crear_pago);
-    this.router.delete("/:id_pago", comprobar, comprobar, this.eliminar_pago);
+    this.router.post("/", this.crear_pago);
+    this.router.delete("/:id_pago", this.eliminar_pago);
   }
 }
 
