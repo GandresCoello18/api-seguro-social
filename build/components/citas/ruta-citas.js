@@ -16,6 +16,7 @@ const express_1 = require("express");
 const store_citas_1 = __importDefault(require("./store-citas"));
 const store_usuarios_1 = __importDefault(require("../usuarios/store-usuarios"));
 const store_grupos_1 = __importDefault(require("../grupos/store-grupos"));
+const { comprobar } = require('../util/util-login');
 const store_horario_1 = __importDefault(require("../horarios/store-horario"));
 const uuid_1 = require("uuid");
 const response_1 = __importDefault(require("../../network/response"));
@@ -76,6 +77,29 @@ class Citas {
             }
         });
     }
+    obtener_citas_grupo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resCita = yield store_citas_1.default.consulta_citas_grupo();
+                response_1.default.success(req, res, resCita, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error al consultar citas");
+            }
+        });
+    }
+    obtener_mis_citas(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('******************** ENTRO A MI CITAS *************************');
+            try {
+                const MisCitas = yield store_citas_1.default.consulta_mis_citas(res.locals.datos_user.id_user);
+                response_1.default.success(req, res, MisCitas, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error en mis obtener citas");
+            }
+        });
+    }
     validar_cita_hora(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id_horario, fecha_cita } = req.params || null;
@@ -108,7 +132,6 @@ class Citas {
                 ];
                 let horas_disponibles = [];
                 const resCita = yield store_citas_1.default.validar_cita(id_horario, fecha_cita);
-                console.log(resCita);
                 const jornadaHorario = yield store_horario_1.default.consulta_horario(id_horario);
                 if (jornadaHorario[0].jornada === 'Mañana') {
                     horas_disponibles = horas_manana;
@@ -166,6 +189,8 @@ class Citas {
     ruta() {
         /* entry point user */
         this.router.get("/validar_cita/:id_horario/:fecha_cita", this.validar_cita_hora);
+        this.router.get("/mis-citas/consulta", comprobar, this.obtener_mis_citas);
+        this.router.get("/cita_grupo", this.obtener_citas_grupo);
         this.router.get("/", this.obtener_cita);
         this.router.post("/", this.asignar_cita);
         this.router.put("/estado/:id", this.cita_estado);

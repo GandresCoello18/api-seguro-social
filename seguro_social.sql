@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-10-2020 a las 22:29:46
+-- Tiempo de generación: 03-11-2020 a las 22:26:34
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -33,17 +33,22 @@ CREATE TABLE `citas` (
   `id_user` varchar(50) NOT NULL,
   `status_cita` varchar(20) NOT NULL,
   `fecha_cita` varchar(25) NOT NULL,
-  `hora_cita` varchar(25) NOT NULL
+  `hora_cita` varchar(25) NOT NULL,
+  `isGrupo` tinyint(1) NOT NULL,
+  `id_grupo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `citas`
 --
 
-INSERT INTO `citas` (`id_cita`, `id_horario`, `id_user`, `status_cita`, `fecha_cita`, `hora_cita`) VALUES
-('550665fe-c178-4e0f-bab8-3a48b4e171c3', '58a1fab0-db54-40a1-b206-8ba4cb1eba79', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-01', '21:00'),
-('94c18bd3-7cac-4c75-a6a1-ec37b4e8ef80', '3e3a9eeb-2746-4eb3-a754-407576eaced0', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-11', '09:30'),
-('bd813e43-80cc-4e10-8e2b-d05ef1c88c30', '58a1fab0-db54-40a1-b206-8ba4cb1eba79', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-01', '20:00');
+INSERT INTO `citas` (`id_cita`, `id_horario`, `id_user`, `status_cita`, `fecha_cita`, `hora_cita`, `isGrupo`, `id_grupo`) VALUES
+('3881a267-234c-4b7e-88ad-1cac73d95bb8', '7d2e533f-91a0-43a4-ae7f-5e0d42b24811', 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Reservado', '2020-10-12', '15:30', 0, 4),
+('465de9da-3ea1-448b-b288-1bd2facfa8c0', '7d2e533f-91a0-43a4-ae7f-5e0d42b24811', '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Reservado', '2020-10-26', '14:30', 1, 1),
+('4df55dd9-4de6-46d8-845d-5552443369dd', '7d2e533f-91a0-43a4-ae7f-5e0d42b24811', '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Reservado', '2020-10-12', '14:30', 1, 1),
+('867646c5-f4c3-4602-92be-118001476d06', '7d2e533f-91a0-43a4-ae7f-5e0d42b24811', 'f13d0523-0ac8-4273-af50-2af0ba33142e', 'Reservado', '2020-10-12', '17:30', 0, 4),
+('d107e876-0c34-4feb-aa6b-daa269860a87', '7d2e533f-91a0-43a4-ae7f-5e0d42b24811', '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Reservado', '2020-10-12', '13:00', 1, 1),
+('dfd297c4-9071-47ff-bac1-581d59eb880d', '7d2e533f-91a0-43a4-ae7f-5e0d42b24811', '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Reservado', '2020-11-16', '17:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -88,7 +93,8 @@ CREATE TABLE `grupo_seguro` (
 --
 
 INSERT INTO `grupo_seguro` (`id_grupo`, `id_user`, `tipo_familiar`, `nombres`, `apellidos`, `fecha_nacimiento`, `status_grupo`, `sexo`) VALUES
-(1, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Hijos', 'patricia', 'coello', '2010-06-11', 'registrado', 'Femenino');
+(1, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Hijos', 'patricia', 'coello', '2010-06-11', 'registrado', 'Femenino'),
+(4, '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Hijos', 'anonimo', 'anonimo', '2020-10-01', 'registrado', 'Masculino');
 
 -- --------------------------------------------------------
 
@@ -108,8 +114,6 @@ CREATE TABLE `horario` (
 --
 
 INSERT INTO `horario` (`id_horario`, `id_personal`, `jornada`, `dia`) VALUES
-('3e3a9eeb-2746-4eb3-a754-407576eaced0', 2, 'Mañana', 'Domingo'),
-('58a1fab0-db54-40a1-b206-8ba4cb1eba79', 5, 'Noche', 'Jueves'),
 ('7d2e533f-91a0-43a4-ae7f-5e0d42b24811', 4, 'Tarde', 'Lunes');
 
 -- --------------------------------------------------------
@@ -188,6 +192,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_user`, `cedula`, `email`, `password`, `status`, `nombres`, `apellidos`, `sexo`, `fecha_nacimiento`, `fecha_registro`) VALUES
+('4eaa5049-0277-45e0-a543-e233aa5dfed4', 1204414545, 'anonimo@gmail.com', '$2a$10$/VpV95PtPSInqL7NCazc4.9bd3R6zH3UOSScP.3pEg/sMXQytJcwK', 'registrado', 'anonimo', 'anonimo', 'Masculino', '2020-10-01', '2020-10-02'),
 ('c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 1207345768, 'goyeselcoca@gmail.com', '$2a$10$nYeuSK2VZTA5O8wPiZyW4ONjDZX8EANUwCZo/Fry2uilavpiwRIea', 'registrado', 'Andres', 'Coello', 'Masculino', '2000-08-01', '2020-06-25'),
 ('f13d0523-0ac8-4273-af50-2af0ba33142e', 1207345741, 'perez_23@gmail.com', '$2a$10$JBaCS/QtRs/XDStW.3yX..0VuMypuRM4RNkUOqujU1lbfoHcN4WHO', 'registrado', 'juan', 'perez', 'Masculino', '2020-09-28', '2020-07-04'),
 ('fbff2fd7-04f7-4ea8-9177-03423c556334', 1207422188, 'administrador@gmail.com', '$2a$10$tZHIgv0rJCFRShqtTZkZQOD2CWEaLHhUJVrjG6mntD4/WmCna9OPW', 'registrado', 'admin', 'admin', 'none', '0000-00-00', '0000-00-00');
@@ -202,7 +207,8 @@ INSERT INTO `usuarios` (`id_user`, `cedula`, `email`, `password`, `status`, `nom
 ALTER TABLE `citas`
   ADD PRIMARY KEY (`id_cita`),
   ADD KEY `id_horario` (`id_horario`),
-  ADD KEY `id_user` (`id_user`);
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_grupo` (`id_grupo`);
 
 --
 -- Indices de la tabla `contacto`
@@ -257,7 +263,7 @@ ALTER TABLE `contacto`
 -- AUTO_INCREMENT de la tabla `grupo_seguro`
 --
 ALTER TABLE `grupo_seguro`
-  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
@@ -280,7 +286,8 @@ ALTER TABLE `personal`
 --
 ALTER TABLE `citas`
   ADD CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`id_horario`) REFERENCES `horario` (`id_horario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `usuarios` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `citas_ibfk_3` FOREIGN KEY (`id_grupo`) REFERENCES `grupo_seguro` (`id_grupo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `grupo_seguro`

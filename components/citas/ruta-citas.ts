@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import Store from './store-citas';
 import StoreUser from '../usuarios/store-usuarios';
 import StoreGrupo from '../grupos/store-grupos';
+const { comprobar } = require('../util/util-login');
 import StoreHorario from '../horarios/store-horario';
 import { v4 as uuidv4 } from "uuid";
 import Respuestas from "../../network/response";
@@ -75,6 +76,27 @@ class Citas {
     }
   }
 
+  async obtener_citas_grupo(req: Request, res: Response) {
+    try {
+        const resCita = await Store.consulta_citas_grupo();
+        Respuestas.success(req, res, resCita, 200);
+    } catch (error) {
+        Respuestas.error(req, res, error, 500, "Error al consultar citas");
+    }
+  }
+
+  async obtener_mis_citas(req: Request, res: Response) {
+
+    console.log('******************** ENTRO A MI CITAS *************************');
+
+    try {
+        const MisCitas = await Store.consulta_mis_citas(res.locals.datos_user.id_user);
+        Respuestas.success(req, res, MisCitas, 200);
+    } catch (error) {
+        Respuestas.error(req, res, error, 500, "Error en mis obtener citas");
+    }
+  }
+
   async validar_cita_hora(req: Request, res: Response) {
     const { id_horario, fecha_cita } = req.params || null;
 
@@ -110,7 +132,6 @@ class Citas {
       let horas_disponibles: Array<string> = [];
 
         const resCita = await Store.validar_cita(id_horario, fecha_cita);
-        console.log(resCita);
 
         const jornadaHorario =  await StoreHorario.consulta_horario(id_horario);
 
@@ -171,6 +192,8 @@ class Citas {
   ruta() {
     /* entry point user */
     this.router.get("/validar_cita/:id_horario/:fecha_cita", this.validar_cita_hora);
+    this.router.get("/mis-citas/consulta", comprobar, this.obtener_mis_citas);
+    this.router.get("/cita_grupo", this.obtener_citas_grupo);
     this.router.get("/", this.obtener_cita);
     this.router.post("/", this.asignar_cita);
     this.router.put("/estado/:id", this.cita_estado);

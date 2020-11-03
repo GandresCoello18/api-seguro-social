@@ -30,7 +30,18 @@ class StoreCita {
     consulta_citas() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = 0 ORDER BY citas.id_cita DESC;`, (err, data) => {
+                db_1.default.query(`SELECT *, usuarios.nombres as nombre_afiliado FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = 0 ORDER BY citas.id_cita DESC;`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    consulta_citas_grupo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT *, grupo_seguro.nombres as nombre_grupo_afiliado FROM citas INNER JOIN grupo_seguro ON grupo_seguro.id_grupo = citas.id_grupo INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = 1 ORDER BY citas.id_cita DESC;`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
@@ -42,6 +53,17 @@ class StoreCita {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
                 db_1.default.query(`SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE citas.id_cita = '${id_cita}' ORDER BY citas.id_cita DESC;`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    consulta_mis_citas(id_user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE citas.id_user = '${id_user}' ORDER BY citas.id_cita DESC;`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
