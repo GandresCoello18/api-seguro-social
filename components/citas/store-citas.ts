@@ -7,7 +7,7 @@ class StoreCita {
   async insertar_cita(cita: Cita_INT) {
     return await new Promise((resolve, reject) => {
       database.query(
-        `INSERT INTO citas (id_cita, id_horario, id_user, status_cita, fecha_cita, hora_cita) VALUES ('${cita.id_cita}', '${cita.id_horario}', '${cita.id_user}', '${cita.status_cita}', '${cita.fecha_cita}', '${cita.hora_cita}')`,
+        `INSERT INTO citas (id_cita, id_horario, id_user, status_cita, fecha_cita, hora_cita, isGrupo, id_grupo) VALUES ('${cita.id_cita}', '${cita.id_horario}', '${cita.id_user}', '${cita.status_cita}', '${cita.fecha_cita}', '${cita.hora_cita}', ${cita.isGrupo}, ${cita.id_grupo})`,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);
@@ -21,7 +21,7 @@ class StoreCita {
   async consulta_citas(): Promise<Cita_INT[]> {
     return await new Promise((resolve, reject) => {
       database.query(
-        `SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal ORDER BY citas.id_cita DESC;`,
+        `SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = 0 ORDER BY citas.id_cita DESC;`,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);

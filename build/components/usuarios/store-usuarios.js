@@ -60,6 +60,17 @@ class StoreUsuario {
             });
         });
     }
+    consulta_usuario_anonimo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM usuarios WHERE email = 'anonimo@gmail.com';`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
     /* PUT - MODIFICAR - ACTUALIZAR */
     editar_usuario(id, nombres, apellidos, email_on, tipo_user) {
         return __awaiter(this, void 0, void 0, function* () {

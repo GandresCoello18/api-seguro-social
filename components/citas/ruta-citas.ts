@@ -1,5 +1,7 @@
 import { Request, Response, Router } from "express";
 import Store from './store-citas';
+import StoreUser from '../usuarios/store-usuarios';
+import StoreGrupo from '../grupos/store-grupos';
 import StoreHorario from '../horarios/store-horario';
 import { v4 as uuidv4 } from "uuid";
 import Respuestas from "../../network/response";
@@ -18,7 +20,7 @@ class Citas {
   /* USUARIO */
 
   async asignar_cita(req: Request, res: Response) {
-    const { id_user, id_horario, fecha_cita, hora_cita } = req.body || null;
+    const { id_user, id_horario, fecha_cita, hora_cita, isGrupo, id_grupo } = req.body || null;
 
     try {
         const cita: Cita_INT = {
@@ -28,7 +30,21 @@ class Citas {
             status_cita: 'Reservado',
             fecha_cita,
             hora_cita,
+            isGrupo,
+            id_grupo,
         }
+
+        if(isGrupo === 0){
+          const grupoAnonimo: any = await StoreGrupo.grupo_anonimo();
+          cita.id_grupo = grupoAnonimo[0].id_grupo;
+        }else{
+          if(!cita.id_user || cita.id_grupo.toString() === cita.id_user){
+            const userAnonimo = await StoreUser.consulta_usuario_anonimo();
+            cita.id_user = userAnonimo[0].id_user;
+          }
+        }
+
+        console.log(cita);
 
         const repeatCita = await Store.consulta_cita_repeat(cita.fecha_cita, cita.id_horario, cita.hora_cita);
         if(repeatCita.length === 0){

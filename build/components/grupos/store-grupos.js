@@ -49,6 +49,18 @@ class StoreGrupos {
             });
         });
     }
+    grupo_anonimo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM grupo_seguro WHERE nombres = 'anonimo' AND apellidos = 'anonimo';`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
+    /* ELIMINAR - DELETE - REMOVER */
     eliminar_integrante_afiliado(id_grupo) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {

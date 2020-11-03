@@ -18,7 +18,7 @@ class StoreCita {
     insertar_cita(cita) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`INSERT INTO citas (id_cita, id_horario, id_user, status_cita, fecha_cita, hora_cita) VALUES ('${cita.id_cita}', '${cita.id_horario}', '${cita.id_user}', '${cita.status_cita}', '${cita.fecha_cita}', '${cita.hora_cita}')`, (err, data) => {
+                db_1.default.query(`INSERT INTO citas (id_cita, id_horario, id_user, status_cita, fecha_cita, hora_cita, isGrupo, id_grupo) VALUES ('${cita.id_cita}', '${cita.id_horario}', '${cita.id_user}', '${cita.status_cita}', '${cita.fecha_cita}', '${cita.hora_cita}', ${cita.isGrupo}, ${cita.id_grupo})`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
@@ -30,7 +30,7 @@ class StoreCita {
     consulta_citas() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal ORDER BY citas.id_cita DESC;`, (err, data) => {
+                db_1.default.query(`SELECT * FROM citas INNER JOIN usuarios ON usuarios.id_user = citas.id_user INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = 0 ORDER BY citas.id_cita DESC;`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);

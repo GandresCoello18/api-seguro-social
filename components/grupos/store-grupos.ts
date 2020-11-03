@@ -42,6 +42,20 @@ class StoreGrupos {
     });
   }
 
+  async grupo_anonimo(): Promise<Grupo_afiliados_INT[]> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `SELECT * FROM grupo_seguro WHERE nombres = 'anonimo' AND apellidos = 'anonimo';`,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
+  /* ELIMINAR - DELETE - REMOVER */
+
   async eliminar_integrante_afiliado(id_grupo: number): Promise<any> {
     return await new Promise((resolve, reject) => {
       database.query(

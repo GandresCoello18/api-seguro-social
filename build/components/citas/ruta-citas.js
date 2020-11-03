@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const store_citas_1 = __importDefault(require("./store-citas"));
+const store_usuarios_1 = __importDefault(require("../usuarios/store-usuarios"));
+const store_grupos_1 = __importDefault(require("../grupos/store-grupos"));
 const store_horario_1 = __importDefault(require("../horarios/store-horario"));
 const uuid_1 = require("uuid");
 const response_1 = __importDefault(require("../../network/response"));
@@ -25,7 +27,7 @@ class Citas {
     /* USUARIO */
     asignar_cita(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id_user, id_horario, fecha_cita, hora_cita } = req.body || null;
+            const { id_user, id_horario, fecha_cita, hora_cita, isGrupo, id_grupo } = req.body || null;
             try {
                 const cita = {
                     id_cita: uuid_1.v4(),
@@ -34,7 +36,20 @@ class Citas {
                     status_cita: 'Reservado',
                     fecha_cita,
                     hora_cita,
+                    isGrupo,
+                    id_grupo,
                 };
+                if (isGrupo === 0) {
+                    const grupoAnonimo = yield store_grupos_1.default.grupo_anonimo();
+                    cita.id_grupo = grupoAnonimo[0].id_grupo;
+                }
+                else {
+                    if (!cita.id_user || cita.id_grupo.toString() === cita.id_user) {
+                        const userAnonimo = yield store_usuarios_1.default.consulta_usuario_anonimo();
+                        cita.id_user = userAnonimo[0].id_user;
+                    }
+                }
+                console.log(cita);
                 const repeatCita = yield store_citas_1.default.consulta_cita_repeat(cita.fecha_cita, cita.id_horario, cita.hora_cita);
                 if (repeatCita.length === 0) {
                     yield store_citas_1.default.insertar_cita(cita);

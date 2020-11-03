@@ -75,6 +75,8 @@ export interface Cita_INT {
     status_cita: string;
     fecha_cita: string;
     hora_cita: string;
+    isGrupo: boolean | number;
+    id_grupo: number;
 }
 
 export interface Email_INT {

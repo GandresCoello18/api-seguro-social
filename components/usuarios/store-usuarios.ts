@@ -51,6 +51,18 @@ class StoreUsuario {
     });
   }
 
+  async consulta_usuario_anonimo(): Promise<Usuario_INT[]> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `SELECT * FROM usuarios WHERE email = 'anonimo@gmail.com';`,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
   /* PUT - MODIFICAR - ACTUALIZAR */
 
   async editar_usuario(
