@@ -30,10 +30,10 @@ class StoreCita {
     });
   }
 
-  async consulta_citas_grupo(): Promise<Cita_INT[]> {
+  async consulta_citas_grupo(isGrupo: number): Promise<Cita_INT[]> {
     return await new Promise((resolve, reject) => {
       database.query(
-        `SELECT *, grupo_seguro.nombres as nombre_grupo_afiliado FROM citas INNER JOIN grupo_seguro ON grupo_seguro.id_grupo = citas.id_grupo INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = 1 ORDER BY citas.id_cita DESC;`,
+        `SELECT *, grupo_seguro.nombres as nombre_grupo_afiliado FROM citas INNER JOIN grupo_seguro ON grupo_seguro.id_grupo = citas.id_grupo INNER JOIN horario ON horario.id_horario = citas.id_horario INNER JOIN personal ON personal.id_personal = horario.id_personal WHERE isGrupo = ${isGrupo} ORDER BY citas.id_cita DESC;`,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);

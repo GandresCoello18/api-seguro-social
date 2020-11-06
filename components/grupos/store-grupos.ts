@@ -42,6 +42,18 @@ class StoreGrupos {
     });
   }
 
+  async consulta_integrante(id_grupo: number): Promise<Grupo_afiliados_INT[]> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `SELECT * FROM grupo_seguro WHERE id_grupo = ${id_grupo};`,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
   async grupo_anonimo(): Promise<Grupo_afiliados_INT[]> {
     return await new Promise((resolve, reject) => {
       database.query(

@@ -7,7 +7,7 @@ import StoreHorario from '../horarios/store-horario';
 import { v4 as uuidv4 } from "uuid";
 import Respuestas from "../../network/response";
 import {
-    Cita_INT
+    Cita_INT,
 } from "../../interface";
 
 class Citas {
@@ -78,7 +78,7 @@ class Citas {
 
   async obtener_citas_grupo(req: Request, res: Response) {
     try {
-        const resCita = await Store.consulta_citas_grupo();
+        const resCita = await Store.consulta_citas_grupo(0);
         Respuestas.success(req, res, resCita, 200);
     } catch (error) {
         Respuestas.error(req, res, error, 500, "Error al consultar citas");
@@ -87,11 +87,19 @@ class Citas {
 
   async obtener_mis_citas(req: Request, res: Response) {
 
-    console.log('******************** ENTRO A MI CITAS *************************');
-
     try {
+        const MisCitasGrupo = await Store.consulta_citas_grupo(1);
+        let mis_citas_grupo: Array<Cita_INT> = [];
+
+        for(let i = 0; i < MisCitasGrupo.length; i++){
+          const grupo = await StoreGrupo.consulta_integrante(MisCitasGrupo[i].id_grupo);
+          if(grupo[0].id_user === res.locals.datos_user.id_user){
+            mis_citas_grupo.push(MisCitasGrupo[i]);
+          }
+        }
+
         const MisCitas = await Store.consulta_mis_citas(res.locals.datos_user.id_user);
-        Respuestas.success(req, res, MisCitas, 200);
+        Respuestas.success(req, res, {MisCitas, MisCitasGrupo: mis_citas_grupo}, 200);
     } catch (error) {
         Respuestas.error(req, res, error, 500, "Error en mis obtener citas");
     }

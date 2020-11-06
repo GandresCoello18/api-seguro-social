@@ -80,7 +80,7 @@ class Citas {
     obtener_citas_grupo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const resCita = yield store_citas_1.default.consulta_citas_grupo();
+                const resCita = yield store_citas_1.default.consulta_citas_grupo(0);
                 response_1.default.success(req, res, resCita, 200);
             }
             catch (error) {
@@ -90,10 +90,17 @@ class Citas {
     }
     obtener_mis_citas(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('******************** ENTRO A MI CITAS *************************');
             try {
+                const MisCitasGrupo = yield store_citas_1.default.consulta_citas_grupo(1);
+                let mis_citas_grupo = [];
+                for (let i = 0; i < MisCitasGrupo.length; i++) {
+                    const grupo = yield store_grupos_1.default.consulta_integrante(MisCitasGrupo[i].id_grupo);
+                    if (grupo[0].id_user === res.locals.datos_user.id_user) {
+                        mis_citas_grupo.push(MisCitasGrupo[i]);
+                    }
+                }
                 const MisCitas = yield store_citas_1.default.consulta_mis_citas(res.locals.datos_user.id_user);
-                response_1.default.success(req, res, MisCitas, 200);
+                response_1.default.success(req, res, { MisCitas, MisCitasGrupo: mis_citas_grupo }, 200);
             }
             catch (error) {
                 response_1.default.error(req, res, error, 500, "Error en mis obtener citas");

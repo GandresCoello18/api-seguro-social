@@ -49,6 +49,17 @@ class StoreGrupos {
             });
         });
     }
+    consulta_integrante(id_grupo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM grupo_seguro WHERE id_grupo = ${id_grupo};`, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
     grupo_anonimo() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
