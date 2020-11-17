@@ -28,13 +28,13 @@ class Pagos {
     const countPago = Math.trunc(Number(pago.monto) / 5);
 
     try {
-      const resPago = [];
+      let resPago: Pago_INT[] = [];
         for(let i = 0; i < countPago; i++){
           pago.monto = 5;
           await Store.insertar_pagos(pago);
-          pago.fecha_pago = moment(new Date(Fecha.incrementarMes(pago.fecha_pago))).format();
           let data = await Store.consulta_pago(pago.id_user, pago.fecha_pago);
           resPago.push(data[0]);
+          pago.fecha_pago = moment(new Date(Fecha.incrementarMes(pago.fecha_pago))).format();
         }
 
         Respuestas.success(req, res, resPago, 200);

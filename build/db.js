@@ -11,10 +11,11 @@ class Mysql {
     }
     conectar() {
         const connection = mysql_1.default.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'seguro_social',
+            host: config.dbHost,
+            user: config.dbUser,
+            password: config.dbPassword,
+            database: config.dbName,
+            port: config.dbPort,
         });
         connection.connect((err) => {
             if (err) {

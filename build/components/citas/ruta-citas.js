@@ -80,7 +80,7 @@ class Citas {
     obtener_citas_grupo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const resCita = yield store_citas_1.default.consulta_citas_grupo(0);
+                const resCita = yield store_citas_1.default.consulta_citas_grupo(1);
                 response_1.default.success(req, res, resCita, 200);
             }
             catch (error) {

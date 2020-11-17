@@ -78,7 +78,7 @@ class Citas {
 
   async obtener_citas_grupo(req: Request, res: Response) {
     try {
-        const resCita = await Store.consulta_citas_grupo(0);
+        const resCita = await Store.consulta_citas_grupo(1);
         Respuestas.success(req, res, resCita, 200);
     } catch (error) {
         Respuestas.error(req, res, error, 500, "Error al consultar citas");
