@@ -47,6 +47,7 @@ class Usuario {
                             fecha_nacimiento,
                             fecha_registro: util_fecha_1.default.fecha_actual(),
                         };
+                        console.log(user);
                         yield store_usuarios_1.default.insertar_usuario(user);
                         const usuario = yield store_usuarios_1.default.consulta_usuario(user.id_user);
                         response_1.default.success(req, res, usuario, 200);
@@ -81,20 +82,15 @@ class Usuario {
         });
     }
     editar_usuario(req, res) {
-        if (res.locals.datos_user.tipo_user == "Administrador") {
-            const { id } = req.params || null;
-            const { nombres, apellidos, email_on, tipo_user } = req.body || null;
-            store_usuarios_1.default.editar_usuario(id, nombres, apellidos, email_on, tipo_user)
-                .then((data) => {
-                response_1.default.success(req, res, data, 200);
-            })
-                .catch((err) => {
-                response_1.default.error(req, res, err, 500, "Error al modificar usuarios");
-            });
-        }
-        else {
-            response_1.default.success(req, res, { feeback: "No tienes permisos para esta accion" }, 200);
-        }
+        const { id } = req.params || null;
+        const { nombres, apellidos, email_on, tipo_user } = req.body || null;
+        store_usuarios_1.default.editar_usuario(id, nombres, apellidos, email_on, tipo_user)
+            .then((data) => {
+            response_1.default.success(req, res, data, 200);
+        })
+            .catch((err) => {
+            response_1.default.error(req, res, err, 500, "Error al modificar usuarios");
+        });
     }
     update_password(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -136,8 +132,8 @@ class Usuario {
         this.router.get("/:id", this.obtener_usuario);
         this.router.post("/", this.crear_usuario);
         this.router.put("/cambiar_clave/:id", this.update_password);
-        this.router.put("/:id", comprobar, this.editar_usuario);
-        this.router.delete("/:id", comprobar, this.eliminar_usuario);
+        this.router.put("/:id", this.editar_usuario);
+        this.router.delete("/:id", this.eliminar_usuario);
     }
 }
 let user = new Usuario();

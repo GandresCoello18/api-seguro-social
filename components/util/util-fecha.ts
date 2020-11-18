@@ -3,11 +3,11 @@ class Fechas {
   
     fecha_actual() {
       let ano = new Date().getFullYear();
-      let mes: any = new Date().getMonth();
+      let mes: any = new Date().getMonth() + 1;
       let dia: any = new Date().getDate();
   
       if (mes < 10) {
-        mes = `${0}${mes + 1}`;
+        mes = `${0}${mes}`;
       }
       if (dia < 10) {
         dia = `${0}${dia}`;
@@ -19,11 +19,11 @@ class Fechas {
     fecha_con_hora_actual() {
       let hoy = new Date();
       let mes: any = hoy.getMonth();
-      let dia: any = hoy.getDate();
+      let dia: any = hoy.getDate() + 1;
       let ano = hoy.getFullYear();
   
       if (mes < 10) {
-        mes = `${0}${mes + 1}`;
+        mes = `${0}${mes}`;
       }
       if (dia < 10) {
         dia = `${0}${dia}`;

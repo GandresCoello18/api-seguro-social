@@ -4,10 +4,10 @@ class Fechas {
     constructor() { }
     fecha_actual() {
         let ano = new Date().getFullYear();
-        let mes = new Date().getMonth();
+        let mes = new Date().getMonth() + 1;
         let dia = new Date().getDate();
         if (mes < 10) {
-            mes = `${0}${mes + 1}`;
+            mes = `${0}${mes}`;
         }
         if (dia < 10) {
             dia = `${0}${dia}`;
@@ -17,10 +17,10 @@ class Fechas {
     fecha_con_hora_actual() {
         let hoy = new Date();
         let mes = hoy.getMonth();
-        let dia = hoy.getDate();
+        let dia = hoy.getDate() + 1;
         let ano = hoy.getFullYear();
         if (mes < 10) {
-            mes = `${0}${mes + 1}`;
+            mes = `${0}${mes}`;
         }
         if (dia < 10) {
             dia = `${0}${dia}`;

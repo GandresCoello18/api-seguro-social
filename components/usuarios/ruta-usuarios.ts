@@ -42,6 +42,8 @@ class Usuario {
                           fecha_registro: Fechas.fecha_actual(),
                       };
 
+                      console.log(user);
+
                       await Store.insertar_usuario(user);
                       const usuario = await Store.consulta_usuario(user.id_user);
                       Respuestas.success(req, res, usuario, 200);
@@ -83,25 +85,16 @@ class Usuario {
   }
 
   editar_usuario(req: Request, res: Response) {
-    if (res.locals.datos_user.tipo_user == "Administrador") {
-      const { id } = req.params || null;
-      const { nombres, apellidos, email_on, tipo_user } = req.body || null;
+    const { id } = req.params || null;
+    const { nombres, apellidos, email_on, tipo_user } = req.body || null;
 
-      Store.editar_usuario(id, nombres, apellidos, email_on, tipo_user)
-        .then((data) => {
-          Respuestas.success(req, res, data, 200);
-        })
-        .catch((err) => {
-          Respuestas.error(req, res, err, 500, "Error al modificar usuarios");
-        });
-    } else {
-      Respuestas.success(
-        req,
-        res,
-        { feeback: "No tienes permisos para esta accion" },
-        200
-      );
-    }
+    Store.editar_usuario(id, nombres, apellidos, email_on, tipo_user)
+      .then((data) => {
+        Respuestas.success(req, res, data, 200);
+      })
+      .catch((err) => {
+        Respuestas.error(req, res, err, 500, "Error al modificar usuarios");
+      });
   }
 
   async update_password(req: Request, res: Response) {
@@ -154,8 +147,8 @@ class Usuario {
     this.router.get("/:id", this.obtener_usuario);
     this.router.post("/", this.crear_usuario);
     this.router.put("/cambiar_clave/:id", this.update_password);
-    this.router.put("/:id", comprobar, this.editar_usuario);
-    this.router.delete("/:id", comprobar, this.eliminar_usuario);
+    this.router.put("/:id", this.editar_usuario);
+    this.router.delete("/:id", this.eliminar_usuario);
   }
 }
 

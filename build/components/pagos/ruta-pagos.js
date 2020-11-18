@@ -42,9 +42,7 @@ class Pagos {
                     let data = yield store_pagos_1.default.consulta_pago(pago.id_user, pago.fecha_pago);
                     resPago.push(data[0]);
                     pago.fecha_pago = moment_1.default(new Date(util_fecha_1.default.incrementarMes(pago.fecha_pago))).format();
-                    console.log(data);
                 }
-                console.log(resPago);
                 response_1.default.success(req, res, resPago, 200);
             }
             catch (error) {
