@@ -15,7 +15,7 @@ class Grupos {
   /* USUARIO */
 
   async agregar_integrante_grupo(req: Request, res: Response) {
-    const { id_user, tipo_familiar, nombres, sexo, apellidos, fecha_nacimiento } = req.body || null;
+    const { id_user, tipo_familiar, nombres, sexo, apellidos, fecha_nacimiento, cedula_g } = req.body || null;
 
     const grupo: Grupo_afiliados_INT = {
         id_user,
@@ -24,7 +24,8 @@ class Grupos {
         sexo,
         apellidos,
         fecha_nacimiento,
-        status_grupo: 'registrado'
+        status_grupo: 'registrado',
+        cedula: cedula_g,
     }
 
     try {

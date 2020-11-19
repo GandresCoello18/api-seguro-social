@@ -51,12 +51,15 @@ class Personal {
     /* USUARIO */
     crear_personal(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { nombres, apellido, cargo } = req.body || null;
+            const { nombres, apellido, cargo, cedula_p, telefono_p } = req.body || null;
+            console.log(req.file);
             const personal = {
                 nombres,
                 apellido,
                 cargo,
                 imagen: req.file.originalname,
+                cedula_p,
+                telefono_p,
             };
             try {
                 yield store_personal_1.default.insertar_personal(personal);

@@ -18,7 +18,7 @@ class StorePersonal {
     insertar_personal(personal) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`INSERT INTO personal (nombres, apellido, cargo, imagen) VALUES ('${personal.nombres}', '${personal.apellido}', '${personal.cargo}', '${personal.imagen}')`, (err, data) => {
+                db_1.default.query(`INSERT INTO personal (nombres, apellido, cargo, imagen, cedula_p, telefono_p) VALUES ('${personal.nombres}', '${personal.apellido}', '${personal.cargo}', '${personal.imagen}', ${personal.cedula_p}, ${personal.telefono_p})`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);

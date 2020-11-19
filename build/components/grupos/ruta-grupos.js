@@ -24,7 +24,7 @@ class Grupos {
     /* USUARIO */
     agregar_integrante_grupo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id_user, tipo_familiar, nombres, sexo, apellidos, fecha_nacimiento } = req.body || null;
+            const { id_user, tipo_familiar, nombres, sexo, apellidos, fecha_nacimiento, cedula_g } = req.body || null;
             const grupo = {
                 id_user,
                 tipo_familiar,
@@ -32,7 +32,8 @@ class Grupos {
                 sexo,
                 apellidos,
                 fecha_nacimiento,
-                status_grupo: 'registrado'
+                status_grupo: 'registrado',
+                cedula: cedula_g,
             };
             try {
                 const integranteExist = yield store_grupos_1.default.consulta_integrante_afiliado(grupo.nombres, grupo.fecha_nacimiento, grupo.tipo_familiar);

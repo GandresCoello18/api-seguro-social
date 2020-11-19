@@ -7,7 +7,7 @@ class StorePersonal {
   async insertar_personal(personal: Personal_INT) {
     return await new Promise((resolve, reject) => {
       database.query(
-        `INSERT INTO personal (nombres, apellido, cargo, imagen) VALUES ('${personal.nombres}', '${personal.apellido}', '${personal.cargo}', '${personal.imagen}')`,
+        `INSERT INTO personal (nombres, apellido, cargo, imagen, cedula_p, telefono_p) VALUES ('${personal.nombres}', '${personal.apellido}', '${personal.cargo}', '${personal.imagen}', ${personal.cedula_p}, ${personal.telefono_p})`,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);

@@ -48,12 +48,17 @@ class Personal {
   /* USUARIO */
 
   async crear_personal(req: Request, res: Response) {
-    const { nombres, apellido, cargo } = req.body || null;
+    const { nombres, apellido, cargo, cedula_p, telefono_p } = req.body || null;
+
+    console.log(req.file);
+
     const personal: Personal_INT = {
       nombres,
       apellido,
       cargo,
       imagen: req.file.originalname,
+      cedula_p,
+      telefono_p,
     }
 
     try {

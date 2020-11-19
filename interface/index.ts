@@ -28,6 +28,7 @@ export interface Grupo_afiliados_INT {
     apellidos: string;
     fecha_nacimiento: string;
     status_grupo: string;
+    cedula: number;
 }
 
 export interface Personal_INT {
@@ -36,6 +37,8 @@ export interface Personal_INT {
     apellido: string;
     cargo: string;
     imagen: string;
+    cedula_p: number;
+    telefono_p: number;
 }
 
 export interface Token {

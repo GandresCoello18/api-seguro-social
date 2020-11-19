@@ -18,7 +18,7 @@ class StoreGrupos {
     insertar_grupos(grupo) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`INSERT INTO grupo_seguro (id_user, tipo_familiar, nombres, apellidos, fecha_nacimiento, status_grupo, sexo) VALUES ('${grupo.id_user}', '${grupo.tipo_familiar}', '${grupo.nombres}', '${grupo.apellidos}', '${grupo.fecha_nacimiento}', '${grupo.status_grupo}', '${grupo.sexo}')`, (err, data) => {
+                db_1.default.query(`INSERT INTO grupo_seguro (id_user, tipo_familiar, nombres, apellidos, fecha_nacimiento, status_grupo, sexo, cedula_g) VALUES ('${grupo.id_user}', '${grupo.tipo_familiar}', '${grupo.nombres}', '${grupo.apellidos}', '${grupo.fecha_nacimiento}', '${grupo.status_grupo}', '${grupo.sexo}', ${grupo.cedula})`, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 03-11-2020 a las 22:26:34
+-- Tiempo de generación: 19-11-2020 a las 05:48:39
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.7
 
@@ -85,16 +85,18 @@ CREATE TABLE `grupo_seguro` (
   `apellidos` varchar(40) NOT NULL,
   `fecha_nacimiento` varchar(25) NOT NULL,
   `status_grupo` varchar(25) NOT NULL,
-  `sexo` varchar(20) NOT NULL
+  `sexo` varchar(20) NOT NULL,
+  `cedula_g` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `grupo_seguro`
 --
 
-INSERT INTO `grupo_seguro` (`id_grupo`, `id_user`, `tipo_familiar`, `nombres`, `apellidos`, `fecha_nacimiento`, `status_grupo`, `sexo`) VALUES
-(1, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Hijos', 'patricia', 'coello', '2010-06-11', 'registrado', 'Femenino'),
-(4, '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Hijos', 'anonimo', 'anonimo', '2020-10-01', 'registrado', 'Masculino');
+INSERT INTO `grupo_seguro` (`id_grupo`, `id_user`, `tipo_familiar`, `nombres`, `apellidos`, `fecha_nacimiento`, `status_grupo`, `sexo`, `cedula_g`) VALUES
+(1, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Hijos', 'patricia', 'coello', '2010-06-11', 'registrado', 'Femenino', 1205416895),
+(4, '4eaa5049-0277-45e0-a543-e233aa5dfed4', 'Hijos', 'anonimo', 'anonimo', '2020-10-01', 'registrado', 'Masculino', 1204713761),
+(5, 'c0ae8e46-1944-43f5-80ab-5a7f62db0f0b', 'Hijos', 'karla', 'galindo', '2020-10-02', 'registrado', 'Femenino', 1515151515);
 
 -- --------------------------------------------------------
 
@@ -149,24 +151,26 @@ CREATE TABLE `personal` (
   `nombres` varchar(40) NOT NULL,
   `apellido` varchar(40) NOT NULL,
   `cargo` varchar(20) NOT NULL,
-  `imagen` varchar(50) NOT NULL
+  `imagen` varchar(50) NOT NULL,
+  `cedula_p` int(11) NOT NULL,
+  `telefono_p` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `personal`
 --
 
-INSERT INTO `personal` (`id_personal`, `nombres`, `apellido`, `cargo`, `imagen`) VALUES
-(1, 'Juan', 'Carlos', 'Medico general', '1.png'),
-(2, 'Carlos', 'Montoya', 'Medico general', '2.png'),
-(3, 'Ruben', 'Otacoma', 'Odontologo', '3.png'),
-(4, 'Roberto', 'Bite', 'Medico general', '4.png'),
-(5, 'Melisa', 'Mariscal', 'Nutricionista', '5.png'),
-(6, 'Carlos', 'Tomala', 'Odontologo', '6.png'),
-(7, 'Karla', 'Villamar', 'Medica general', '7.png'),
-(8, 'Victor', 'Ramirez', 'Odontologo', '8.png'),
-(9, 'Cristobal', 'Garcia', 'Odontologo', '9.png'),
-(10, 'Miguel', 'Monserrate', 'Medico general', '10.png');
+INSERT INTO `personal` (`id_personal`, `nombres`, `apellido`, `cargo`, `imagen`, `cedula_p`, `telefono_p`) VALUES
+(1, 'Juan', 'Carlos', 'Medico general', '1.png', 1204578126, 994258423),
+(2, 'Carlos', 'Montoya', 'Medico general', '2.png', 1205135842, 945451267),
+(3, 'Ruben', 'Otacoma', 'Odontologo', '3.png', 1205514474, 945152156),
+(4, 'Roberto', 'Bite', 'Medico general', '4.png', 1201133584, 945121112),
+(5, 'Melisa', 'Mariscal', 'Medico general', '5.png', 1203012057, 974894565),
+(6, 'Carlos', 'Tomala', 'Odontologo', '6.png', 1207894875, 957410854),
+(7, 'Karla', 'Villamar', 'Medica general', '7.png', 1204563952, 951521214),
+(8, 'Victor', 'Ramirez', 'Odontologo', '8.png', 1200152320, 945894185),
+(9, 'Cristobal', 'Garcia', 'Odontologo', '9.png', 1204710385, 941515121),
+(10, 'Miguel', 'Monserrate', 'Medico general', '10.png', 1205554810, 410856147);
 
 -- --------------------------------------------------------
 
@@ -263,7 +267,7 @@ ALTER TABLE `contacto`
 -- AUTO_INCREMENT de la tabla `grupo_seguro`
 --
 ALTER TABLE `grupo_seguro`
-  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
@@ -275,7 +279,7 @@ ALTER TABLE `pagos`
 -- AUTO_INCREMENT de la tabla `personal`
 --
 ALTER TABLE `personal`
-  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas
