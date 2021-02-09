@@ -18,6 +18,8 @@ class Contacto {
   async crear_contacto(req: Request, res: Response) {
     const { nombres, tema, mensaje, correo } = req.body || null;
 
+    console.log(req.body)
+
     const contacto: Contacto_INT = {
         nombre: nombres,
         tema,
@@ -27,7 +29,7 @@ class Contacto {
 
     try {
         await Store.insertar_contacto(contacto);
-        const resContacto = await Store.consulta_contacto(contacto.id_contacto);
+        const resContacto = await Store.consulta_contacto();
         Respuestas.success(req, res, resContacto, 200);
     } catch (error) {
         Respuestas.error(req, res, error, 500, 'Error en crear contacto');

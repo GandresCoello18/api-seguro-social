@@ -30,10 +30,10 @@ class StorePersonal {
     });
   }
 
-  async consulta_contacto(id_contacto: number | undefined): Promise<Contacto_INT[]> {
+  async consulta_contacto(): Promise<Contacto_INT[]> {
     return await new Promise((resolve, reject) => {
       database.query(
-        `SELECT * FROM contacto WHERE id_contacto = ${id_contacto}; `,
+        `SELECT * FROM contacto ORDER BY id_contacto DESC LIMIT 1; `,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);

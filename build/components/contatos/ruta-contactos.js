@@ -26,6 +26,7 @@ class Contacto {
     crear_contacto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { nombres, tema, mensaje, correo } = req.body || null;
+            console.log(req.body);
             const contacto = {
                 nombre: nombres,
                 tema,
@@ -34,7 +35,7 @@ class Contacto {
             };
             try {
                 yield store_contactos_1.default.insertar_contacto(contacto);
-                const resContacto = yield store_contactos_1.default.consulta_contacto(contacto.id_contacto);
+                const resContacto = yield store_contactos_1.default.consulta_contacto();
                 response_1.default.success(req, res, resContacto, 200);
             }
             catch (error) {
