@@ -21,7 +21,7 @@ class StorePersonal {
   async consulta_pagos(): Promise<Pago_INT[]> {
     return await new Promise((resolve, reject) => {
       database.query(
-        `SELECT * FROM pagos INNER JOIN usuarios ON usuarios.id_user = pagos.id_user ORDER BY pagos.id_pago DESC; `,
+        `SELECT *, pagos.status as status FROM pagos INNER JOIN usuarios ON usuarios.id_user = pagos.id_user ORDER BY pagos.id_pago DESC; `,
         (err, data) => {
           if (err) return reject(err);
           resolve(data);

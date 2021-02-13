@@ -30,7 +30,7 @@ class StorePersonal {
     consulta_pagos() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield new Promise((resolve, reject) => {
-                db_1.default.query(`SELECT * FROM pagos INNER JOIN usuarios ON usuarios.id_user = pagos.id_user ORDER BY pagos.id_pago DESC; `, (err, data) => {
+                db_1.default.query(`SELECT *, pagos.status as status FROM pagos INNER JOIN usuarios ON usuarios.id_user = pagos.id_user ORDER BY pagos.id_pago DESC; `, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(data);
