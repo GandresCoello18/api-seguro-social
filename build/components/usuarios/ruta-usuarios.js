@@ -116,6 +116,24 @@ class Usuario {
             }
         });
     }
+    update_admin_password(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { password, idUser } = req.body || null;
+            console.log(req.body);
+            try {
+                bcryptjs_1.default.hash(password, 10).then((nueva_clave) => __awaiter(this, void 0, void 0, function* () {
+                    console.log(nueva_clave);
+                    yield store_usuarios_1.default.update_password(idUser, nueva_clave);
+                    const user = yield store_usuarios_1.default.consulta_usuario(idUser);
+                    user[0].password = nueva_clave;
+                    response_1.default.success(req, res, { user, update: true }, 200);
+                })).catch(error => response_1.default.error(req, res, error.message, 500, "Error al cambiar clave"));
+            }
+            catch (error) {
+                response_1.default.error(req, res, error.message, 500, "Error al cambiar clave");
+            }
+        });
+    }
     eliminar_usuario(req, res) {
         const { id } = req.params || null;
         store_usuarios_1.default.eliminar_usuario(id)
@@ -131,6 +149,7 @@ class Usuario {
         this.router.get("/", this.obtener_usuarios);
         this.router.get("/:id", this.obtener_usuario);
         this.router.post("/", this.crear_usuario);
+        this.router.put("/cambiar_clave/admin", this.update_admin_password);
         this.router.put("/cambiar_clave/:id", this.update_password);
         this.router.put("/:id", this.editar_usuario);
         this.router.delete("/:id", this.eliminar_usuario);

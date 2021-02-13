@@ -14,7 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const store_pagos_1 = __importDefault(require("./store-pagos"));
+const store_usuarios_1 = __importDefault(require("../usuarios/store-usuarios"));
 const util_fecha_1 = __importDefault(require("../util/util-fecha"));
+const send_email_1 = __importDefault(require("../email/send-email"));
 const { comprobar } = require("../util/util-login");
 const response_1 = __importDefault(require("../../network/response"));
 const moment_1 = __importDefault(require("moment"));
@@ -42,6 +44,20 @@ class Pagos {
                     let data = yield store_pagos_1.default.consulta_pago(pago.id_user, pago.fecha_pago);
                     resPago.push(data[0]);
                     pago.fecha_pago = moment_1.default(new Date(util_fecha_1.default.incrementarMes(pago.fecha_pago))).format();
+                }
+                const user = yield store_usuarios_1.default.consulta_usuario(pago.id_user);
+                if (admin) {
+                    const send = {
+                        from: user[0].email,
+                        to: user[0].email,
+                        subject: 'Pagos del seguro social "La Tereza"',
+                        text: `Su pago desde la fecha: ${moment_1.default(fecha_pago).format('LL')} ha sido registrado con metodo de pago: ${metodo} y monto de: ${monto}`,
+                    };
+                    send_email_1.default.send(send).then(() => {
+                        response_1.default.success(req, res, { send: true }, 200);
+                    }).catch(error => {
+                        response_1.default.error(req, res, error.message, 500, 'Error al enviar mensaje de correo electronico');
+                    });
                 }
                 response_1.default.success(req, res, resPago, 200);
             }

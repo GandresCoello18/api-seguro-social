@@ -129,6 +129,25 @@ class Usuario {
       }
   }
 
+  async update_admin_password(req: Request, res: Response) {
+    const { password, idUser } = req.body || null;
+    console.log(req.body)
+
+    try {
+      bcryptjs.hash(password, 10).then( async nueva_clave => {
+        console.log(nueva_clave);
+        await Store.update_password(idUser, nueva_clave);
+
+        const user = await Store.consulta_usuario(idUser);
+        user[0].password = nueva_clave
+
+        Respuestas.success(req, res, {user, update: true}, 200);
+    }).catch(error => Respuestas.error(req, res, error.message, 500, "Error al cambiar clave"))
+  }catch (error) {
+    Respuestas.error(req, res, error.message, 500, "Error al cambiar clave");
+  }
+}
+
   eliminar_usuario(req: Request, res: Response) {
     const { id } = req.params || null;
 
@@ -146,6 +165,7 @@ class Usuario {
     this.router.get("/", this.obtener_usuarios);
     this.router.get("/:id", this.obtener_usuario);
     this.router.post("/", this.crear_usuario);
+    this.router.put("/cambiar_clave/admin", this.update_admin_password);
     this.router.put("/cambiar_clave/:id", this.update_password);
     this.router.put("/:id", this.editar_usuario);
     this.router.delete("/:id", this.eliminar_usuario);

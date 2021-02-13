@@ -1,9 +1,11 @@
 import { Request, Response, Router } from "express";
 import Store from "./store-pagos";
+import StoreUsuario from '../usuarios/store-usuarios';
 import Fecha from '../util/util-fecha';
+import Email from '../email/send-email';
 const { comprobar } = require("../util/util-login");
 import Respuestas from "../../network/response";
-import { Pago_INT } from "../../interface";
+import { Email_INT, Pago_INT } from "../../interface";
 import moment from "moment";
 
 class Pagos {
@@ -35,6 +37,23 @@ class Pagos {
           let data = await Store.consulta_pago(pago.id_user, pago.fecha_pago);
           resPago.push(data[0]);
           pago.fecha_pago = moment(new Date(Fecha.incrementarMes(pago.fecha_pago))).format();
+        }
+
+        const user = await StoreUsuario.consulta_usuario(pago.id_user)
+
+        if(admin){
+          const send: Email_INT = {
+            from: user[0].email,
+            to: user[0].email,
+            subject: 'Pagos del seguro social "La Tereza"',
+            text: `Su pago desde la fecha: ${moment(fecha_pago).format('LL')} ha sido registrado con metodo de pago: ${metodo} y monto de: ${monto}`,
+          }
+
+          Email.send(send).then( () => {
+            Respuestas.success(req, res, {send: true}, 200);
+          }).catch(error => {
+            Respuestas.error(req, res, error.message, 500, 'Error al enviar mensaje de correo electronico');
+          })
         }
 
         Respuestas.success(req, res, resPago, 200);
