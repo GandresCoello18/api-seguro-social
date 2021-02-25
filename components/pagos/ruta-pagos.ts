@@ -81,6 +81,17 @@ class Pagos {
     }
   }
 
+  async obtener_pagos_por_fecha(req: Request, res: Response) {
+
+    try {
+        const { fecha } = req.params || null
+        const Pagos = await Store.consulta_pagos_por_fecha(fecha);
+        Respuestas.success(req, res, Pagos, 200);
+    } catch (error) {
+        Respuestas.error(req, res, error, 500, "Error en mis obtener pagos por mes");
+    }
+  }
+
   async eliminar_pago(req: Request, res: Response) {
     const { id_pago } = req.params || null;
 
@@ -95,6 +106,7 @@ class Pagos {
   ruta() {
     /* entry point user */
     this.router.get("/mis-pagos", comprobar, this.obtener_mis_pagos);
+    this.router.get("/mes/:fecha", this.obtener_pagos_por_fecha);
     this.router.get("/", this.obtener_pagos);
     this.router.post("/", this.crear_pago);
     this.router.delete("/:id_pago", this.eliminar_pago);

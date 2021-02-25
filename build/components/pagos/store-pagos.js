@@ -60,6 +60,17 @@ class StorePersonal {
             });
         });
     }
+    consulta_pagos_por_fecha(fecha_pago) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise((resolve, reject) => {
+                db_1.default.query(`SELECT * FROM pagos INNER JOIN usuarios ON usuarios.id_user = pagos.id_user WHERE pagos.fecha_pago LIKE '%${fecha_pago}%' ORDER BY pagos.id_pago DESC; `, (err, data) => {
+                    if (err)
+                        return reject(err);
+                    resolve(data);
+                });
+            });
+        });
+    }
     ////////7  DELETE
     eliminar_pago(id_pago) {
         return __awaiter(this, void 0, void 0, function* () {

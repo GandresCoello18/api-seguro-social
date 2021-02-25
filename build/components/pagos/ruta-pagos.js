@@ -88,6 +88,18 @@ class Pagos {
             }
         });
     }
+    obtener_pagos_por_fecha(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { fecha } = req.params || null;
+                const Pagos = yield store_pagos_1.default.consulta_pagos_por_fecha(fecha);
+                response_1.default.success(req, res, Pagos, 200);
+            }
+            catch (error) {
+                response_1.default.error(req, res, error, 500, "Error en mis obtener pagos por mes");
+            }
+        });
+    }
     eliminar_pago(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id_pago } = req.params || null;
@@ -103,6 +115,7 @@ class Pagos {
     ruta() {
         /* entry point user */
         this.router.get("/mis-pagos", comprobar, this.obtener_mis_pagos);
+        this.router.get("/mes/:fecha", this.obtener_pagos_por_fecha);
         this.router.get("/", this.obtener_pagos);
         this.router.post("/", this.crear_pago);
         this.router.delete("/:id_pago", this.eliminar_pago);

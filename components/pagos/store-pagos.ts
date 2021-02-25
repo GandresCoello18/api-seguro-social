@@ -54,6 +54,18 @@ class StorePersonal {
     });
   }
 
+  async consulta_pagos_por_fecha(fecha_pago: string): Promise<Pago_INT[]> {
+    return await new Promise((resolve, reject) => {
+      database.query(
+        `SELECT * FROM pagos INNER JOIN usuarios ON usuarios.id_user = pagos.id_user WHERE pagos.fecha_pago LIKE '%${fecha_pago}%' ORDER BY pagos.id_pago DESC; `,
+        (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        }
+      );
+    });
+  }
+
   ////////7  DELETE
 
   async eliminar_pago(id_pago: number): Promise<any> {
